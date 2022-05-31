@@ -455,6 +455,34 @@
     })
   </script>
 
+  <!-- script filter data pada halaman kurikulum -->
+  <script>
+    $(document).ready(function() {
+      $('#formFilter').submit(function(e) {
+        e.preventDefault();
+        const kdJurusan = $('#kd_jurusan').val();
+        const kdTingkatan = $('#kd_tingkatan').val();
+        const idKurikulum = $('#idKurikulum').val();
+
+        // console.log(kdJurusan + kdTingkatan + idKurikulum);
+
+        var url = "<?= base_url('kurikulum/filter/') ?>" + idKurikulum + "/" + kdJurusan + "/" + kdTingkatan;
+
+        $('#result').load(url);
+      });
+    });
+
+    // $('.filter').on('click', function() {
+    //   const kdJurusan = $('#kd_jurusan').val();
+    //   const kdTingkatan = $('#kd_tingkatan').val();
+    //   const idKurikulum = $('#idKurikulum').val();
+
+    //   console.log(kdJurusan + kdTingkatan + idKurikulum);
+
+
+    // })
+  </script>
+
 </body>
 
 </html>

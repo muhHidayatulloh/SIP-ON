@@ -113,33 +113,36 @@ class Kurikulum extends CI_Controller
 
     public function detail()
     {
+        $data['idKurikulum'] =  $this->uri->segment(3);
+        $this->template->load('template', 'kurikulum/detail', $data);
+    }
 
+    // untuk filter data yang ditampilkan ke table pada halaman kurikulum detail
+    public function filter()
+    {
+        $kur = $this->uri->segment(3);
+        $jur = $this->uri->segment(4);
+        $ting = $this->uri->segment(5);
 
-        $data['idDetail'] =  $this->uri->segment(3);
-        $kd_jurusan = $this->input->post('kd_jurusan', TRUE);
-        $kd_tingkatan = $this->input->post('kd_tingkatan', TRUE);
-        if (isset($_POST['submit'])) {
+        // var_dump($kur . $jur . $ting);
 
-            if ($kd_jurusan == 'null' || $kd_tingkatan == 'null') {
-                $this->session->set_flashdata('pesan', msgError('Wajib Pilih semua opsi saat akan filter data'));
-                $this->template->load('template', 'kurikulum/detail', $data);
-            } else {
-                $sql = "SELECT * FROM tbl_kurikulum_detail JOIN tbl_mapel ON tbl_kurikulum_detail.kd_mapel = tbl_mapel.kd_mapel WHERE tbl_kurikulum_detail.kd_jurusan = $kd_jurusan AND tbl_kurikulum_detail.kd_tingkatan = kd_tingkatan";
+        $this->db->select('*');
+        $this->db->from('tbl_kurikulum_detail');
+        $this->db->join('tbl_mapel', 'tbl_mapel.kd_mapel = tbl_kurikulum_detail.kd_mapel');
+        $array = array('id_kurikulum' => $kur, 'kd_jurusan' => $jur, 'kd_tingkatan' => $ting);
+        $this->db->where($array);
+        $query = $this->db->get()->result();
 
-                $hasil = $this->db->query($sql);
-
-                $data = [
-                    'hasil' => $hasil->result(),
-                    'kd_jurusan' => $kd_jurusan,
-                    'kd_tingkatan' => $kd_tingkatan,
-                    'idDetail' => $this->uri->segment(3)
-                ];
-
-                $this->template->load('template', 'kurikulum/detail', $data);
-            }
+        if (sizeof($query) != 0) {
+            $data['mapel'] = $query;
+            $this->load->view('kurikulum/result_filter', $data);
         } else {
-            $this->template->load('template', 'kurikulum/detail', $data);
+            $this->load->view('attention/no_data');
         }
+
+        // var_dump($data);
+        // die;
+
     }
 
     public function add_detail()
@@ -162,5 +165,11 @@ class Kurikulum extends CI_Controller
         } else {
             $this->template->load('template', 'kurikulum/add_detail');
         }
+    }
+
+    public function queryjson()
+    {
+        $idJurusan = $this->input->post('kdJurusan', TRUE);
+        $idTingkatan = $this->input->post('kdTingkatan', TRUE);
     }
 }

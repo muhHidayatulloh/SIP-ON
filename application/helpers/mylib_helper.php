@@ -3,7 +3,7 @@
 function cmb_dinamis($name, $table, $field, $pk, $selected = null, $extra = null)
 {
 	$ci   = get_instance();
-	$cmb  = "<select name='$name' class='form-control text-bold' $extra>";
+	$cmb  = "<select name='$name' class='form-control text-bold' $extra id='$name'>";
 	$cmb .= "<option value='null'>--Pilih--</option>";
 
 	$data = $ci->db->get($table)->result();
@@ -92,6 +92,7 @@ function Terbilang($x)
 		return Terbilang($x / 1000000) . " juta" . Terbilang($x % 1000000);
 }
 
+// new
 function check_access($id_role, $id_menu)
 {
 	$ci = get_instance();

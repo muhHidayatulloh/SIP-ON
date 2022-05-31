@@ -1,15 +1,16 @@
 <section class='content'>
 	<div class='container-fluid'>
-		<?php var_dump($hasil) ?>
+
 		<div class='row'>
-			<div class='col-lg-4 col-sm-5'>
+			<div class='col-lg-4 col-md-5 col-sm-5'>
 				<div class="card">
 					<div class="card-header">
 						<h3 class="card-title">Filter Data</h3>
 					</div>
 					<!-- /.card-header -->
 					<div class="card-body">
-						<form action="<?= base_url('kurikulum/detail/' . $idDetail) ?>" method="post">
+						<form action="" method="post" id="formFilter">
+							<input type="hidden" value="<?= $idKurikulum; ?>" id="idKurikulum">
 							<table class="table table-bordered">
 								<tbody>
 									<tr>
@@ -33,7 +34,7 @@
 									<tr>
 
 										<td colspan="2">
-											<button type="submit" name="submit" class="btn btn-warning float-lg-right">Filter</button>
+											<button type="submit" class="btn btn-warning float-lg-right" id="filter">Tampilkan</button>
 										</td>
 									</tr>
 								</tbody>
@@ -44,21 +45,33 @@
 					<div class="card-footer">
 						<?php
 						echo anchor('kurikulum', '<button class="btn btn-danger">Kembali</button>');
-						echo anchor('kurikulum/add_detail/' . $idDetail, '<button class="btn bg-navy float-lg-right">Tambah Mata Pelajaran</button>');
+						echo anchor('kurikulum/add_detail/' . $idKurikulum, '<button class="btn bg-navy float-lg-right">Tambah Mata Pelajaran</button>');
 						?>
 					</div>
 				</div>
 				<!-- /.card -->
 			</div>
 
-			<div class="col-lg-8 col-sm-12">
+			<div class="col-lg-8 col-md-7 col-sm-12">
 				<div class="card">
 					<div class="card-header">
 						<h3 class="card-title">Data Daftar Mata Pelajaran</h3>
 					</div>
 					<!-- /.card-header -->
 					<div class="card-body">
-						<?php if (!empty($hasil)) { ?>
+						<!-- tabel diisi dari ajax -->
+						<div id="result"></div>
+					</div>
+					<!-- /.card-body -->
+				</div>
+				<!-- /.card -->
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<!-- <?php if (!empty($hasil)) { ?>
 							<table class="table table-light" id="example2">
 								<thead class="thead-light">
 									<tr>
@@ -86,12 +99,6 @@
 								<h4 class="alert-heading"><i class="fas fa-globe-americas"></i> Perhatian</h4>
 								Filter Data Terlebih Dahulu
 							</div>
-						<?php } ?>
-					</div>
-					<!-- /.card-body -->
-				</div>
-				<!-- /.card -->
-			</div>
-		</div>
-	</div>
-</section>
+						<?php }
+					unset($hasil);
+						?> -->
