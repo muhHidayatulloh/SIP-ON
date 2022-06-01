@@ -21,12 +21,18 @@ class Guru_model extends CI_Model
 
     public function save()
     {
+        $nip  = $this->input->post('nip', TRUE);
+        $nama = $this->input->post('nama', TRUE);
+        $username = 'G' . substr($nama, 0, 3) . substr($nip, 8, 4);
         $data = [
-            'nip'           => $this->input->post('nip', TRUE),
+            'nip'           => $nip,
             'karpeg'        => $this->input->post('karpeg', TRUE),
-            'nama'          => $this->input->post('nama', TRUE),
+            'username'      => $username,
+            'password'      => password_hash('gurusmkn1cibatu', PASSWORD_DEFAULT),
+            'nama'          => $nama,
             'tempat_lahir' => $this->input->post('tempat_lahir', TRUE),
             'tgl_lahir'     => $this->input->post('tanggal_lahir', TRUE),
+            'gender'        => $this->input->post('gender', TRUE),
             'pangkat'       => $this->input->post('pangkat', TRUE),
             'golongan'      => $this->input->post('golongan', TRUE),
             'jabatan'       => $this->input->post('jabatan', TRUE),
