@@ -17,7 +17,7 @@
 
                         <p class="text-center text-bold"><?= $guru->nama_level; ?></p>
 
-                        <p class="text-muted text-center"><?= $guru->ket ?? '-'; ?></p>
+                        <p class="text-muted text-center"><?= $guru->keterangan ?? '-'; ?></p>
 
                         <!-- Riwayat Pendidikan -->
                         <div class="row">
@@ -64,7 +64,7 @@
                             <div class="col-lg-5">
                                 <ul class="list-group list-group-unbordered mb-3">
                                     <li class="list-group-item">
-                                        <?= $guru->ket == "PNS / LS" || $guru->ket == "PNS" ? '<b>NIP/NUPTK</b>' : '<b>NIK</b>'; ?> <i class="float-right"><?= $guru->nip; ?></i>
+                                        <?= $guru->keterangan == "PNS / LS" || $guru->keterangan == "PNS" ? '<b>NIP/NUPTK</b>' : '<b>NIK</b>'; ?> <i class="float-right"><?= $guru->nip; ?></i>
                                     </li>
                                     <li class="list-group-item">
                                         <b>Karpeg</b> (Kartu Pegawai) <i class="float-right"><?= $guru->karpeg ?? '-'; ?></i>

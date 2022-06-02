@@ -4,7 +4,7 @@ class Guru_model extends CI_Model
 {
     public $tabel = "tbl_guru", $id = "id";
 
-    function get($field = null, $where = null, $sql = null)
+    function get($field = null, $where = null, $sql = null, $querySql = null)
     {
         if ($where != null) {
             $this->db->where($field, $where);
@@ -12,7 +12,11 @@ class Guru_model extends CI_Model
         } else if ($sql != null) {
             $this->db->where($sql);
             $query = $this->db->get($this->tabel);
+        } else if ($querySql != null) {
+            $query = $this->db->query($querySql);
         } else {
+            $this->db->select('*, tbl_guru.id as id_guru');
+            $this->db->join('tbl_guru_keterangan', 'tbl_guru_keterangan.id = tbl_guru.id_guru_keterangan');
             $query = $this->db->get($this->tabel);
         }
 
@@ -54,7 +58,7 @@ class Guru_model extends CI_Model
             'no_tgl_surat_pengangkatan_pertama'     => $this->input->post('no_tgl_surat_pengangkatan_pertama', TRUE),
             'no_tgl_surat_pengangkatan_terakhir'    => $this->input->post('no_tgl_surat_pengangkatan_terakhir', TRUE),
             'pejabat_yang_mengangkat'               => $this->input->post('pejabat_yang_mengangkat', TRUE),
-            'ket'                                   => $this->input->post('ket', TRUE),
+            'id_guru_keterangan'                                   => $this->input->post('ket', TRUE),
         ];
 
         return $this->db->insert($this->tabel, $data);
@@ -74,20 +78,47 @@ class Guru_model extends CI_Model
     {
         $data = array(
             //tabel di database => name di form
-            'nama_jurusan'          => $this->input->post('nama_jurusan', TRUE),
-            'deskripsi'             => $this->input->post('deskripsi', TRUE),
+            'nip'           => $this->input->post('nip', TRUE),
+            'karpeg'        => $this->input->post('karpeg', TRUE),
+            'nama'          => $this->input->post('nama', TRUE),
+            'tempat_lahir' => $this->input->post('tempat_lahir', TRUE),
+            'tgl_lahir'     => $this->input->post('tanggal_lahir', TRUE),
+            'gender'        => $this->input->post('gender', TRUE),
+            'pangkat'       => $this->input->post('pangkat', TRUE),
+            'golongan'      => $this->input->post('golongan', TRUE),
+            'jabatan'       => $this->input->post('jabatan', TRUE),
+            'pendidikan'    => $this->input->post('pendidikan', TRUE),
+            'pendidikan_th' => $this->input->post('pendidikan_th', TRUE),
+            'jurusan'       => $this->input->post('jurusan', TRUE),
+            'usia_th'       => $this->input->post('usia_th', TRUE),
+            'usia_bl'       => $this->input->post('usia_bl', TRUE),
+            'mk_th'         => $this->input->post('mk_th', TRUE),
+            'mk_bl'         => $this->input->post('mk_bl', TRUE),
+            'tambahan_mk_th' => $this->input->post('tambahan_mk_th', TRUE),
+            'tambahan_mk_bl' => $this->input->post('tambahan_mk_bl', TRUE),
+            'mk_potongan'   => $this->input->post('mk_potongan', TRUE),
+            'lat_jab_nama'  => $this->input->post('lat_jab_nama', TRUE),
+            'lat_jab_th'    => $this->input->post('lat_jab_th', TRUE),
+            'lat_jab_bl'    => $this->input->post('lat_jab_bl', TRUE),
+            'mutasi_kepeg'  => $this->input->post('mutasi_kepeg', TRUE),
+            'pertgl_dso'    => $this->input->post('pertgl_dso', TRUE),
+            'no_tgl_surat_pengangkatan_pertama'     => $this->input->post('no_tgl_surat_pengangkatan_pertama', TRUE),
+            'no_tgl_surat_pengangkatan_terakhir'    => $this->input->post('no_tgl_surat_pengangkatan_terakhir', TRUE),
+            'pejabat_yang_mengangkat'               => $this->input->post('pejabat_yang_mengangkat', TRUE),
+            'id_guru_keterangan'                                   => $this->input->post('ket', TRUE),
         );
-        $id_jurusan    = $this->input->post('id');
-        $this->db->where($this->id, $id_jurusan);
+        $id    = $this->input->post('id');
+        $this->db->where($this->id, $id);
         return $this->db->update($this->tabel, $data);
     }
 
     public function get_join($id)
     {
-
+        $this->db->select('*, tbl_guru.id as id_guru');
         $this->db->from($this->tabel);
+        $this->db->join('tbl_guru_keterangan', 'tbl_guru_keterangan.id = ' . $this->tabel . '.id_guru_keterangan');
         $this->db->join('tbl_level_user', 'tbl_level_user.id_level_user = ' . $this->tabel . '.jabatan');
-        $this->db->where('id', $id);
+        $this->db->where($this->tabel . '.id', $id);
         $query = $this->db->get();
 
         return $query->result();
