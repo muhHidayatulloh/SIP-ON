@@ -39,7 +39,7 @@
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <h4 class="pt-1"><?php echo ucfirst($this->uri->segment(1)); ?> Page</h4 class="pt-1">
+          <h4 class="pt-1"><?php echo ucfirst($this->uri->segment(1)); ?></h4 class="pt-1">
         </li>
       </ul>
 
@@ -274,23 +274,25 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-sm-12">
-              <ol class="breadcrumb pl-2">
-                <li class="breadcrumb-item"><a href="<?= base_url(); ?>">Home</a></li>
-                <?php $segment1 = $this->uri->segment(1);
-                $segment2 = $this->uri->segment(2);
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-2">
+                  <li class="breadcrumb-item"><a href="<?= base_url(); ?>">Home</a></li>
+                  <?php $segment1 = $this->uri->segment(1);
+                  $segment2 = $this->uri->segment(2);
 
-                if (empty($segment2)) {
-                ?>
-                  <li class="breadcrumb-item active"><?php echo ucfirst($segment1); ?></li>
-                <?php } else if (empty($title)) { ?>
-                  <li class="breadcrumb-item"><a href="<?= base_url($segment1); ?>"><?php echo ucfirst($segment1); ?></a></li>
-                  <li class="breadcrumb-item active"><?php echo ucfirst($segment2); ?></li>
-                <?php } else { ?>
-                  <li class="breadcrumb-item"><a href="<?= base_url($segment1); ?>"><?php echo ucfirst($segment1); ?></a></li>
-                  <li class="breadcrumb-item"><a href="<?= base_url($segment1 . '/' . $title); ?>"><?php echo ucfirst($title); ?></a></li>
-                  <li class="breadcrumb-item active"><?php echo ucfirst($segment2); ?></li>
-                <?php } ?>
-              </ol>
+                  if (empty($segment2)) {
+                  ?>
+                    <li class="breadcrumb-item active"><?php echo ucfirst($segment1); ?></li>
+                  <?php } else if (empty($title)) { ?>
+                    <li class="breadcrumb-item"><a href="<?= base_url($segment1); ?>"><?php echo ucfirst($segment1); ?></a></li>
+                    <li class="breadcrumb-item active"><?php echo ucfirst($segment2); ?></li>
+                  <?php } else { ?>
+                    <li class="breadcrumb-item"><a href="<?= base_url($segment1); ?>"><?php echo ucfirst($segment1); ?></a></li>
+                    <li class="breadcrumb-item"><a href="<?= base_url($segment1 . '/' . $title); ?>"><?php echo ucfirst($title); ?></a></li>
+                    <li class="breadcrumb-item active"><?php echo ucfirst($segment2); ?></li>
+                  <?php } ?>
+                </ol>
+              </nav>
             </div>
 
           </div>
@@ -447,6 +449,27 @@
       }).then(result => {
         if (result.isConfirmed) {
           'Update Change!',
+          window.location.href = getLink,
+          'Success'
+        }
+      })
+      return false;
+    })
+
+    $('.alert_hapus_siswa').on('click', function() {
+      var getLink = $(this).attr('href');
+      Swal.fire({
+        title: 'Information',
+        icon: 'warning',
+        text: 'Yakin ingin menghapus? Jika menghapus siswa maka data orang tua dari siswa tersebut juga akan terhapus.',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Hapus',
+        cancelButtonText: 'Batal'
+      }).then(result => {
+        if (result.isConfirmed) {
+          'Deleted!',
           window.location.href = getLink,
           'Success'
         }

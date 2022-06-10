@@ -22,8 +22,7 @@
                                     <th>Nisn</th>
                                     <th>Nama Siswa</th>
                                     <th>Foto</th>
-
-
+                                    <th>Kelas</th>
                                     <th>Aksi</th>
 
                                 </tr>
@@ -36,16 +35,18 @@
                                         <td><?= $data->nis; ?></td>
                                         <td><?= $data->nisn; ?></td>
                                         <td><?= $data->nama; ?></td>
-                                        <td><?= $data->pas_foto; ?></td>
+                                        <td class="justify-content-center d-flex"><img src="<?= base_url('assets/dist/img/profile/' . $data->pas_foto); ?>" alt="Profile Image" class="rounded img-thumbnail img-md" id="profile"></td>
+                                        <td><?= $data->nama_tingkatan . " " . $data->nama_jurusan . " " . $data->nomor_kelas; ?></td>
 
 
                                         <td class="text-center">
 
                                             <?php
-                                            echo anchor('siswa/detail/' . $data->id_siswa, '<button class="btn btn-secondary btn-xs mx-1" title="detail"><i class="fas fa-eye"></i></button>');
+                                            echo anchor('siswa/kehadiran/' . $data->id_siswa, '<button class="btn badge-success btn-xs mx-1" title="Kehadiran">Kehadiran</button>');
+                                            // echo anchor('siswa/detail/' . $data->id_siswa, '<button class="btn btn-secondary btn-xs mx-1" title="detail"><i class="fas fa-eye"></i></button>');
                                             echo anchor('siswa/edit/' . $data->id_siswa, '<button class="btn btn-warning btn-xs mx-1" title="Edit"><i class="fas fa-edit"></i></button>');
                                             ?>
-                                            <a href="<?= base_url('siswa/delete/') . $data->id_siswa; ?>" class="btn btn-danger btn-xs alert_hapus" title="Hapus"><i class="fas fa-trash"></i></a>
+                                            <a href="<?= base_url('siswa/delete/') . $data->id_siswa . "/" . $data->id_orang_tua; ?>" class="btn btn-danger btn-xs alert_hapus_siswa" title="Hapus"><i class="fas fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

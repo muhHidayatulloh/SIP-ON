@@ -118,11 +118,11 @@
                             <div class="form-group">
                                 <label>Gender <span class="fas" style="color: red;">*</span></label>
                                 <div class="custom-control custom-radio">
-                                    <input class="custom-control-input <?= strlen(form_error('ket')) != 0 ? 'is-invalid' : ''; ?>" type="radio" id="customRadio1" name="gender" value="1" <?= set_radio('gender', '1') ?>>
+                                    <input class="custom-control-input <?= strlen(form_error('gender')) != 0 ? 'is-invalid' : ''; ?>" type="radio" id="customRadio1" name="gender" value="1" <?= set_radio('gender', '1') ?>>
                                     <label for="customRadio1" class="custom-control-label">Laki-laki</label>
                                 </div>
                                 <div class="custom-control custom-radio">
-                                    <input class="custom-control-input <?= strlen(form_error('ket')) != 0 ? 'is-invalid' : ''; ?>" type="radio" id="customRadio2" name="gender" value="2" <?= set_radio('gender', '2'); ?>>
+                                    <input class="custom-control-input <?= strlen(form_error('gender')) != 0 ? 'is-invalid' : ''; ?>" type="radio" id="customRadio2" name="gender" value="2" <?= set_radio('gender', '2'); ?>>
                                     <label for="customRadio2" class="custom-control-label">Perempuan</label>
                                 </div>
 

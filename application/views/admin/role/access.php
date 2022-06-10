@@ -39,6 +39,7 @@
                             <thead>
                                 <th>No</th>
                                 <th>Menu</th>
+                                <th>Link</th>
                                 <th>Access</th>
                             </thead>
                             <tbody>
@@ -47,6 +48,7 @@
                                     <tr>
                                         <td><?= $i++; ?></td>
                                         <td><?= $m->nama_menu; ?></td>
+                                        <td><?= $m->link; ?></td>
                                         <td>
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input" <?= check_access($role->id_level_user, $m->id); ?> data-role="<?= $role->id_level_user; ?>" data-menu="<?= $m->id; ?>">

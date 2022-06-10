@@ -17,7 +17,7 @@ class Admin extends CI_Controller
 
 	public function index()
 	{
-		$data = [];
+		$data = ['title' => 'Dashboard'];
 
 		$this->template->load('template', 'admin/view', $data);
 	}
@@ -99,5 +99,10 @@ class Admin extends CI_Controller
 		}
 
 		$this->session->set_flashdata('pesan', msgSuccess('Hak akses berhasil diubah'));
+	}
+
+	public function profile()
+	{
+		$this->template->load('template', 'guru/profile');
 	}
 }
