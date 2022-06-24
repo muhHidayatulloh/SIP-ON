@@ -5,7 +5,9 @@ class Jurusan extends CI_Controller
     function __construct()
     {
         parent::__construct();
+        is_logged_in();
         $this->load->model('Jurusan_model');
+        $this->load->model('user_model');
     }
 
     public function index()
@@ -13,12 +15,14 @@ class Jurusan extends CI_Controller
         $data = [
             'jurusan'   => $this->Jurusan_model->get(),
         ];
+        $data['user'] = $this->user_model->get();
 
         $this->template->load('template', 'jurusan/view', $data);
     }
 
     public function add()
     {
+        $data['user'] = $this->user_model->get();
 
         if (isset($_POST['submit'])) {
 
@@ -86,6 +90,7 @@ class Jurusan extends CI_Controller
 
     function edit($id)
     {
+        $data['user'] = $this->user_model->get();
         if (isset($_POST['submit'])) {
             // $_post submit found
 

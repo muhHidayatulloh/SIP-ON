@@ -8,11 +8,25 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 align-content-md-between">
 
-                        <!-- tombol tambah data menu -->
-                        <?php
-                        echo anchor('siswa/add', '<button class="btn btn-success btn-flat btn-sm mb-1">Tambah Data</button>');
-                        ?>
+                                <!-- tombol tambah data menu -->
+                                <?php
+                                echo anchor('siswa/add', '<button class="btn btn-success btn-flat btn-sm mb-1">Tambah Data</button>');
+                                ?>
+                                <!-- Example single danger button -->
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-warning btn-flat btn-sm mb-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Export
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="<?= base_url('siswa/export_pdf'); ?>">pdf</a>
+                                        <a class="dropdown-item" href="<?= base_url('siswa/export_excel'); ?>">excel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <table id="example2" class="table table-bordered table-hover text-sm">
                             <thead>

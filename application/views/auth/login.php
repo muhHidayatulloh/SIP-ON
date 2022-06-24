@@ -17,6 +17,8 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url(); ?>assets/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="<?= base_url(); ?>assets/custom/css/color.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="<?= base_url() ?>assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 </head>
 
 <body class="hold-transition login-page custom-biru-muda">
@@ -42,29 +44,30 @@
 
 
                         <?php
-                        echo form_open('auth/login', 'role="form" class="pt-3"');
+                        echo form_open('auth', 'role="form" class="pt-3"');
                         ?>
                         <div class="form-group py-2">
-                            <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" placeholder="Username" required class="" name="email"> </div>
+                            <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" placeholder="Username" required class="<?= (form_error('username')) ? 'is-invalid' : ''; ?>" name="username"> </div>
                             <div class="invalid-feedback">
-                                ini pesan error
+                                <?= form_error('username'); ?>
                             </div>
                         </div>
 
 
 
                         <div class="form-group py-1 pb-2">
-                            <div class="input-field"> <span class="fas fa-lock p-2"></span> <input type="password" placeholder="password" required class="" name="password"> <button class="btn bg-white text-muted eye"> <span class="far fa-eye-slash"></span> </button> </div>
+                            <div class="input-field">
+                                <span class="fas fa-lock p-2"></span>
+                                <input type="password" placeholder="password" required class="<?= (form_error('username')) ? 'is-invalid' : ''; ?>" name="password">
+                                <!-- <button class="btn bg-white text-muted eye"> <span class="far fa-eye-slash"></span> </button> -->
+                            </div>
+                            <div class="invalid-feedback">
+                                <?= form_error('password'); ?>
+                            </div>
                         </div>
 
 
-
-                        <div class="d-flex align-items-start">
-                            <div class="remember"> <label class="option text-muted"> Remember me <input type="radio" name="radio"> <span class="checkmark"></span> </label> </div>
-                            <div class="ml-auto"> <a href="#" id="forgot">Forgot Password?</a> </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-block text-center my-3">Login</button>
+                        <button type="submit" class="btn btn-block text-center my-3" name="submit">Login</button>
 
                         </form>
                     </div>
@@ -86,7 +89,12 @@
     <script src="<?= base_url(); ?>assets/plugins/jquery-validation/additional-methods.min.js"></script>
 
 
+    <!-- SweetAlert2 -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="<?= base_url() ?>assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 
+    <!-- sweet alert pesan  -->
+    <?= $this->session->flashdata('pesan'); ?>
 </body>
 
 </html>

@@ -6,18 +6,21 @@ class Tingkatan extends CI_Controller
     function __construct()
     {
         parent::__construct();
+        is_logged_in();
         $this->load->model('Tingkatan_model');
+        $this->load->model('user_model');
     }
 
     public function index()
     {
+        $data['user'] = $this->user_model->get();
         $data['tingkatan'] = $this->Tingkatan_model->get();
         $this->template->load('template', 'tingkatan/view', $data);
     }
 
     public function add()
     {
-
+        $data['user'] = $this->user_model->get();
         if (isset($_POST['submit'])) {
             // post submit tru
 
@@ -46,6 +49,7 @@ class Tingkatan extends CI_Controller
 
     public function edit($id = null)
     {
+        $data['user'] = $this->user_model->get();
         if (isset($_POST['submit'])) {
             // $_post submit found
 

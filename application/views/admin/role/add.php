@@ -9,7 +9,7 @@
                     <!-- /.card-header -->
                     <!-- form start -->
                     <?php
-                    echo form_open('admin/add_role', 'role="form" class="form-horizontal"');
+                    echo form_open('role/add_role', 'role="form" class="form-horizontal"');
                     ?>
                     <div class="card-body col-sm-11 text-right">
                         <div class="form-group row">

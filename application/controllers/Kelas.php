@@ -6,8 +6,10 @@ class Kelas extends CI_Controller
     function __construct()
     {
         parent::__construct();
+        is_logged_in();
         $this->load->model('Kelas_model');
         $this->load->model('Jurusan_model');
+        $this->load->model('user_model');
         $this->load->model('Tingkatan_model');
     }
 
@@ -21,13 +23,15 @@ class Kelas extends CI_Controller
             'count'      => $this->Kelas_model->count(),
             'countX'     => $this->Kelas_model->count('nama_tingkatan', 'X'),
             'countXI'    => $this->Kelas_model->count('nama_tingkatan', 'XI'),
-            'countXII'   => $this->Kelas_model->count('nama_tingkatan', 'XII')
+            'countXII'   => $this->Kelas_model->count('nama_tingkatan', 'XII'),
+            'user'       => $this->user_model->get()
         ];
         $this->template->load('template', 'kelas/view', $data);
     }
 
     public function add()
     {
+        $data['user'] = $this->user_model->get();
         $data = [
             'jurusan'               => $this->Jurusan_model->get(),
             'tingkatan_kelas'       => $this->Tingkatan_model->get(),
@@ -67,6 +71,7 @@ class Kelas extends CI_Controller
 
     function edit($id = null)
     {
+        $data['user'] = $this->user_model->get();
         if (isset($_POST['submit'])) {
             // $_post submit found
             // proses update

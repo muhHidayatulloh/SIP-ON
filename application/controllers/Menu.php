@@ -7,12 +7,15 @@ class Menu extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
+		is_logged_in();
 		// memuat model menu
 		$this->load->model('Menu_model');
+		$this->load->model('user_model');
 	}
 
 	public function index()
 	{
+		$data['user'] = $this->user_model->get();
 		$data = [
 			'menu' => $this->Menu_model->get()
 		];
@@ -22,6 +25,7 @@ class Menu extends CI_Controller
 
 	public function add()
 	{
+		$data['user'] = $this->user_model->get();
 		$data = [
 			'menu' => $this->Menu_model->get()
 		];
@@ -43,6 +47,7 @@ class Menu extends CI_Controller
 
 	public function edit($id)
 	{
+		$data['user'] = $this->user_model->get();
 		if (isset($_POST['submit'])) {
 			$this->Menu_model->update();
 			$this->session->set_flashdata('pesan', msgSuccess('Menu berhasil diubah'));

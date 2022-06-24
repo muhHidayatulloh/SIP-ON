@@ -6,6 +6,7 @@ class TahunAkademik extends Ci_Controller
     function __construct()
     {
         parent::__construct();
+        is_logged_in();
         $this->load->model('TahunAkademik_model');
     }
     public function index()

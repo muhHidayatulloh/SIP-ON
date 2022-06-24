@@ -6,7 +6,16 @@ class OrangTua_model extends CI_Model
 
     public function get()
     {
-        return "hello";
+        $this->db->select('a.*, b.nama as nama_siswa, b.nis');
+        $this->db->join('tbl_siswa as b', 'a.id_orang_tua = b.id_orang_tua');
+        return $this->db->get('tbl_orang_tua as a');
+    }
+
+    public function get_where($where)
+    {
+        $this->db->select('a.*, b.nama as nama_siswa, b.nis');
+        $this->db->join('tbl_siswa as b', 'a.id_orang_tua = b.id_orang_tua');
+        return $this->db->get_where('tbl_orang_tua as a', $where);
     }
 
     public function max_id()
@@ -30,10 +39,11 @@ class OrangTua_model extends CI_Model
             'id_orang_tua' => $id_orang_tua,
             'username' => $username,
             'password' => password_hash('ortusmkn1cibatu', PASSWORD_DEFAULT),
-            'nama_ayah' => $ayah,
+            'nama' => $ayah,
             'nama_ibu' => $ibu,
             'no_tlp_ortu' => $this->input->post('no_tlp_ortu', TRUE),
-            'alamat' => $this->input->post('alamat_ortu', TRUE)
+            'alamat' => $this->input->post('alamat_ortu', TRUE),
+            'id_level_user' => $this->input->post('id_level_ortu', TRUE)
 
         ];
 
@@ -49,10 +59,11 @@ class OrangTua_model extends CI_Model
     {
         $data = [
 
-            'nama_ayah' => $this->input->post('ayah', TRUE),
+            'nama' => $this->input->post('ayah', TRUE),
             'nama_ibu' => $this->input->post('ibu', TRUE),
             'no_tlp_ortu' => $this->input->post('no_tlp_ortu', TRUE),
-            'alamat' => $this->input->post('alamat_ortu', TRUE)
+            'alamat' => $this->input->post('alamat_ortu', TRUE),
+            'id_level_user' => $this->input->post('id_level_ortu', TRUE)
 
         ];
 

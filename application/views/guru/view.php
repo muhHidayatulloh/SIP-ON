@@ -19,10 +19,7 @@
                                 <tr>
                                     <th width="12px">No</th>
                                     <th>Nip</th>
-                                    <th>Karpeg</th>
                                     <th>Nama Guru</th>
-                                    <th>Keterangan</th>
-
                                     <th>Aksi</th>
 
                                 </tr>
@@ -33,14 +30,12 @@
                                     <tr>
                                         <td><?= $i++; ?></td>
                                         <td><?= $data->nip; ?></td>
-                                        <td><?= strlen($data->karpeg) != 0 ? $data->karpeg : '-'; ?></td>
                                         <td><?= $data->nama; ?></td>
-                                        <td><?= $data->keterangan; ?></td>
 
                                         <td class="text-center">
 
                                             <?php
-                                            echo anchor('guru/detail/' . $data->id_guru, '<button class="btn btn-secondary btn-xs mx-1" title="detail"><i class="fas fa-eye"></i></button>');
+                                            // echo anchor('guru/detail/' . $data->id_guru, '<button class="btn btn-secondary btn-xs mx-1" title="detail"><i class="fas fa-eye"></i></button>');
                                             echo anchor('guru/edit/' . $data->id_guru, '<button class="btn btn-warning btn-xs mx-1" title="Edit"><i class="fas fa-edit"></i></button>');
                                             ?>
                                             <a href="<?= base_url('guru/delete/') . $data->id_guru; ?>" class="btn btn-danger btn-xs alert_hapus" title="Hapus"><i class="fas fa-trash"></i></a>

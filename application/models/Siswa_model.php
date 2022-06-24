@@ -4,9 +4,20 @@ class Siswa_model extends CI_Model
 {
     public $tabel = "tbl_siswa", $id = "id_siswa";
 
+
+    function get_siswa_select_where($select = '*', $where = []) {
+        $this->db->select($select);
+        $this->db->join('tbl_kelas', $this->tabel . '.id_kelas = tbl_kelas.id');
+        $this->db->join('tbl_orang_tua', $this->tabel . '.id_orang_tua = tbl_orang_tua.id_orang_tua');
+        $this->db->join('tbl_tingkatan_kelas', 'tbl_kelas.kd_tingkatan = tbl_tingkatan_kelas.kd_tingkatan');
+        $this->db->join('tbl_jurusan', 'tbl_kelas.kd_jurusan = tbl_jurusan.kd_jurusan');
+
+        return $this->db->get_where($this->tabel, $where);
+    }
+
     function get($field = null, $where = null, $sql = null, $querySql = null)
     {
-        $this->db->select('*, tbl_orang_tua.alamat as alamat_ortu');
+        $this->db->select('*, tbl_orang_tua.alamat as alamat_ortu, tbl_orang_tua.nama as nama_ayah, tbl_siswa.nama as nama');
 
         $this->db->join('tbl_kelas', $this->tabel . '.id_kelas = tbl_kelas.id');
         $this->db->join('tbl_orang_tua', $this->tabel . '.id_orang_tua = tbl_orang_tua.id_orang_tua');
@@ -64,6 +75,7 @@ class Siswa_model extends CI_Model
             'asal_sekolah' => $this->input->post('asal_sekolah', TRUE),
             'id_orang_tua' => $this->input->post('id_orang_tua', TRUE),
             'id_kelas' => $this->input->post('kelas', TRUE),
+            'id_level_user' => $this->input->post('id_level_siswa', TRUE),
         ];
 
         $result = $this->db->insert($this->tabel, $data);
@@ -85,6 +97,7 @@ class Siswa_model extends CI_Model
             'no_tlp_siswa' => $this->input->post('no_tlp_siswa', TRUE),
             'asal_sekolah' => $this->input->post('asal_sekolah', TRUE),
             'id_kelas' => $this->input->post('kelas', TRUE),
+            'id_level_user' => $this->input->post('id_level_siswa', TRUE)
         ];
 
         $id    = $this->input->post('id_siswa');
@@ -104,5 +117,14 @@ class Siswa_model extends CI_Model
             $this->db->where($this->id, $id);
             return $this->db->delete($this->tabel);
         }
+    }
+
+    public function count()
+    {
+
+        $Var = $this->db->get('tbl_siswa');
+        $Var->num_rows();
+
+        return $Var;
     }
 }

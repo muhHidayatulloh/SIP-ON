@@ -11,7 +11,8 @@
 
             <!-- tombol tambah data menu -->
             <?php
-            echo anchor('menu/add', '<button class="btn btn-success btn-flat mb-1">Tambah Data</button>');
+            echo anchor('menu/add', '<button class="btn btn-success btn-flat mb-1 mr-1">Tambah Data</button>');
+            echo anchor('role', '<button class="btn btn-warning btn-flat mb-1">Manage Role</button>');
             ?>
 
             <table id="example2" class="table table-bordered table-hover">

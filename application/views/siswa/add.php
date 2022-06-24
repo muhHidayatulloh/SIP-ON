@@ -1,4 +1,4 @@
-<!-- <?php var_dump($kelas) ?> -->
+<!-- <?php var_dump($id_level_user) ?> -->
 <section class='content'>
     <div class='container-fluid'>
         <div class='row'>
@@ -9,6 +9,8 @@
                     </div>
                     <div class="card-body">
                         <form action="<?= base_url('siswa/add') ?>" method="POST">
+                            <input type="hidden" name="id_level_siswa" value="<?= $id_level_siswa[0]->id_level_user; ?>">
+                            <input type="hidden" name="id_level_ortu" value="<?= $id_level_orang_tua[0]->id_level_user; ?>">
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label for="nis">Nis</label>

@@ -1,15 +1,3 @@
-<!-- <section class='content'>
-    <div class='container-fluid'>
-        <div class='row'>
-            <div class='col-lg-12'>
-                <div id="qr-reader" style="width:600px"></div>
-                <div id="qr-reader-results"></div>
-                <p class="text"></p>
-            </div>
-        </div>
-    </div>
-</section> -->
-
 <section class="content">
     <div class="row">
         <div class="col-md-12">

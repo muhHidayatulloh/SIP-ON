@@ -1,5 +1,70 @@
 <?php
 
+function is_logged_in()
+{
+	$ci = get_instance();
+
+	if (!$ci->session->userdata('username')) {
+		redirect('auth');
+	} else {
+		$id_level_user = $ci->session->userdata('id_level_user');
+
+		$link = $ci->uri->segment(1);
+		$uri2 = $ci->uri->segment(2);
+		$queryMenu = $ci->db->get_where('tabel_menu', ['link' => $link])->row_array();
+		
+		if (!is_null($uri2)) {
+			$link = $link.'/'.$uri2;
+			$queryMenu = $ci->db->get_where('tabel_menu', ['link' => $link])->row_array();
+			// var_dump($queryMenu); die;
+			
+			if($queryMenu == null) {
+				$link = $ci->uri->segment(1);
+				$queryMenu = $ci->db->get_where('tabel_menu', ['link' => $link])->row_array();
+			}
+		}
+
+		$menuId = $queryMenu['id'];
+
+
+		$userAccess = $ci->db->get_where('tbl_user_rule', ['id_level_user' => $id_level_user, 'id_menu' => $menuId]);
+
+		if ($userAccess->num_rows() < 1) {
+			redirect('auth/blocked');
+		}
+	}
+}
+
+
+date_default_timezone_set("Asia/Jakarta");
+//fungsi check tanggal merah
+function tanggalMerah($value)
+{
+	$array = json_decode(file_get_contents("https://raw.githubusercontent.com/guangrei/Json-Indonesia-holidays/master/calendar.json"), true);
+	$pesan = '';
+
+	if ($array != null) {
+
+		//check tanggal merah berdasarkan libur nasional
+		if (isset($array[$value])) :		echo "tanggal merah " . $array[$value]["deskripsi"];
+
+		//check tanggal merah berdasarkan hari minggu
+		elseif (
+			date("D", strtotime($value)) === "Sun"
+		) :		$pesan =  "tanggal merah hari minggu";
+			return true;
+
+		//bukan tanggal merah
+		else : $pesan = "bukan tanggal merah";
+			return false;
+		endif;
+	} else {
+		$pesan = 'Not Connection';
+	}
+
+	echo $pesan;
+}
+
 function cmb_dinamis($name, $table, $field, $pk, $selected = null, $extra = null)
 {
 	$ci   = get_instance();
@@ -140,17 +205,34 @@ function msgError($pesan = '')
 
 function msgInfo($pesan = '')
 {
-	$msgError =  "
+	$msgInfo =  "
                     <script>
                         $(function() {
-                            Swal.fire({
-                                icon: 'Warning',
-                                title: 'Information',
-                                text: '$pesan'
-                            })
+                            Swal.fire('$pesan')
                         })
                     </script>
                     ";
 
-	return $msgError;
+	return $msgInfo;
+}
+
+function toastSuccess($pesan = '')
+{
+	$toastSuccess = "
+		<script>
+		var Toast = Swal.mixin({
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 2500
+		  });
+
+		Toast.fire({
+			icon: 'success',
+			title: '$pesan'
+		});
+	 </script> 
+	  ";
+
+	  return $toastSuccess;
 }

@@ -26,6 +26,41 @@
   <link rel="stylesheet" href="<?= base_url() ?>assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 
 
+  <!-- kumpulan script -->
+  <!-- ----------------------- -->
+  <!-- ----------------------- -->
+  <!-- ----------------------- -->
+
+  <!-- jQuery -->
+  <script src="<?php echo base_url(''); ?>assets/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="<?php echo base_url(''); ?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- SweetAlert2 -->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="<?= base_url() ?>assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+
+  <!-- DataTables  & Plugins -->
+  <script src="<?php echo base_url(''); ?>assets/plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <script src="<?php echo base_url(''); ?>assets/plugins/jszip/jszip.min.js"></script>
+  <script src="<?php echo base_url(''); ?>assets/plugins/pdfmake/pdfmake.min.js"></script>
+  <script src="<?php echo base_url(''); ?>assets/plugins/pdfmake/vfs_fonts.js"></script>
+  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+  <!-- sweet alert pesan  -->
+  <?= $this->session->flashdata('pesan'); ?>
+
+
+
+
+
 </head>
 
 <body class="hold-transition sidebar-mini text-md">
@@ -39,118 +74,19 @@
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <h4 class="pt-1"><?php echo ucfirst($this->uri->segment(1)); ?></h4 class="pt-1">
+          <h4 class="pt-1"><?php echo $title ?? ucfirst($this->uri->segment(1)); ?></h4 class="pt-1">
         </li>
       </ul>
 
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
-        <!-- Navbar Search -->
-        <li class="nav-item">
-          <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-            <i class="fas fa-search"></i>
-          </a>
-          <div class="navbar-search-block">
-            <form class="form-inline">
-              <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                  <button class="btn btn-navbar" type="submit">
-                    <i class="fas fa-search"></i>
-                  </button>
-                  <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </li>
 
-        <!-- Messages Dropdown Menu -->
-        <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="far fa-comments"></i>
-            <span class="badge badge-danger navbar-badge">3</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="<?php echo base_url(''); ?>assets/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    Brad Diesel
-                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">Call me whenever you can...</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="<?php echo base_url(''); ?>assets/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    John Pierce
-                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">I got your message bro</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="<?php echo base_url(''); ?>assets/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    Nora Silvester
-                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">The subject goes here</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-          </div>
-        </li>
+
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="far fa-bell"></i>
-            <span class="badge badge-warning navbar-badge">15</span>
+          <a class="nav-link alert_logout" href="<?= base_url('auth/logout') ?>">
+            <i class="fas fa-sign-out-alt"></i>
           </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <span class="dropdown-item dropdown-header">15 Notifications</span>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <i class="fas fa-envelope mr-2"></i> 4 new messages
-              <span class="float-right text-muted text-sm">3 mins</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <i class="fas fa-users mr-2"></i> 8 friend requests
-              <span class="float-right text-muted text-sm">12 hours</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <i class="fas fa-file mr-2"></i> 3 new reports
-              <span class="float-right text-muted text-sm">2 days</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-          </div>
         </li>
         <li class="nav-item">
           <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -181,32 +117,22 @@
         <!-- Sidebar user (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="<?php echo base_url(''); ?>assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            <img src="<?php echo base_url(''); ?>assets/dist/img/profile/<?= $user->pas_foto ?? 'default.png'; ?>" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="#" class="d-block">Alexander Pierce</a>
-          </div>
-        </div>
-
-        <!-- SidebarSearch Form -->
-        <div class="form-inline">
-          <div class="input-group" data-widget="sidebar-search">
-            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-            <div class="input-group-append">
-              <button class="btn btn-sidebar">
-                <i class="fas fa-search fa-fw"></i>
-              </button>
-            </div>
+            <a href="#" class="d-block"><?= $user->nama ?? 'Nama User'; ?></a>
           </div>
         </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
             <?php
-            $sql_menu = "SELECT * FROM `tabel_menu` WHERE id IN(SELECT id_menu FROM tbl_user_rule WHERE id_level_user = 1) AND is_main_menu = 0";
+            $id_level_user = $this->session->userdata('id_level_user');
+
+            $sql_menu = "SELECT * FROM `tabel_menu` WHERE id IN(SELECT id_menu FROM tbl_user_rule WHERE id_level_user = '$id_level_user') AND is_main_menu = 0";
 
             $main_menu  = $this->db->query($sql_menu)->result();
 
@@ -229,7 +155,7 @@
                     <?php
                     foreach ($submenu->result() as $sub) {
                     ?>
-                      <li class="nav-item pl-4">
+                      <li class="nav-item pl-1">
                         <a href="<?= base_url() . $sub->link; ?>" class="nav-link">
                           <i class="<?= $sub->icon; ?> nav-icon"></i>
                           <p><?= $sub->nama_menu; ?></p>
@@ -288,8 +214,8 @@
                     <li class="breadcrumb-item active"><?php echo ucfirst($segment2); ?></li>
                   <?php } else { ?>
                     <li class="breadcrumb-item"><a href="<?= base_url($segment1); ?>"><?php echo ucfirst($segment1); ?></a></li>
-                    <li class="breadcrumb-item"><a href="<?= base_url($segment1 . '/' . $title); ?>"><?php echo ucfirst($title); ?></a></li>
-                    <li class="breadcrumb-item active"><?php echo ucfirst($segment2); ?></li>
+                    <li class="breadcrumb-item active"><?php echo ucfirst($title); ?></li>
+                    <!-- <li class="breadcrumb-item active"><?php echo ucfirst($segment2); ?></li> -->
                   <?php } ?>
                 </ol>
               </nav>
@@ -307,7 +233,7 @@
 
     <footer class="main-footer">
       <div class="float-right d-none d-sm-block">
-        <b>Version</b> 3.1.0
+        <b>Version</b> 0.0.5
       </div>
       <span>Copyright &copy; Muhhi's Comp 2021 - <?= date('Y') ?></span>
     </footer>
@@ -320,35 +246,23 @@
   </div>
   <!-- ./wrapper -->
 
-  <!-- jQuery -->
-  <script src="<?php echo base_url(''); ?>assets/plugins/jquery/jquery.min.js"></script>
-  <!-- Bootstrap 4 -->
-  <script src="<?php echo base_url(''); ?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+  <!-- script -->
+  <!-- script -->
+  <!-- script -->
+
+
   <!-- AdminLTE App -->
   <script src="<?php echo base_url(''); ?>assets/dist/js/adminlte.min.js"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="<?php echo base_url(''); ?>assets/dist/js/demo.js"></script>
 
-  <!-- DataTables  & Plugins -->
-  <script src="<?php echo base_url(''); ?>assets/plugins/datatables/jquery.dataTables.min.js"></script>
-  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-  <script src="<?php echo base_url(''); ?>assets/plugins/jszip/jszip.min.js"></script>
-  <script src="<?php echo base_url(''); ?>assets/plugins/pdfmake/pdfmake.min.js"></script>
-  <script src="<?php echo base_url(''); ?>assets/plugins/pdfmake/vfs_fonts.js"></script>
-  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-  <script src="<?php echo base_url(''); ?>assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
-  <!-- SweetAlert2 -->
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="<?= base_url() ?>assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 
-  <!-- sweet alert pesan  -->
-  <?= $this->session->flashdata('pesan'); ?>
+
 
   <!-- ################ Custom script ################ -->
 
@@ -398,14 +312,15 @@
       const roleId = $(this).data('role');
 
       $.ajax({
-        url: "<?= base_url('admin/change_access'); ?>",
+        url: "<?= base_url('role/change_access'); ?>",
         type: 'post',
         data: {
           menuId: menuId,
           roleId: roleId
         },
-        success: function() {
-          document.location.href = "<?= base_url('admin/access_role/'); ?>" + roleId;
+        success: function(e) {
+          console.log(e);
+          document.location.href = "<?= base_url('role/access_role/'); ?>" + roleId;
         }
       });
     });
@@ -466,6 +381,27 @@
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Ya, Hapus',
+        cancelButtonText: 'Batal'
+      }).then(result => {
+        if (result.isConfirmed) {
+          'Deleted!',
+          window.location.href = getLink,
+          'Success'
+        }
+      })
+      return false;
+    })
+    // sweet alert logout
+    $('.alert_logout').on('click', function() {
+      var getLink = $(this).attr('href');
+      Swal.fire({
+        title: 'Information',
+        icon: 'warning',
+        text: 'Yakin ingin Keluar?',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Keluar',
         cancelButtonText: 'Batal'
       }).then(result => {
         if (result.isConfirmed) {

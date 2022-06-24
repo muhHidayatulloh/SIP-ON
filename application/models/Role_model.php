@@ -13,6 +13,13 @@ class Role_model extends CI_Model
 		return $query->result();
 	}
 
+	public function get_desc()
+	{
+		$this->db->order_by('id_level_user', 'desc');
+		$query = $this->db->get($this->table);
+		return $query->result();
+	}
+
 	function get_where($id)
 	{
 		$query = $this->db->get_where($this->table, ['id_level_user' => $id]);

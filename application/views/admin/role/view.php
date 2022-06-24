@@ -11,7 +11,8 @@
 
                         <!-- tombol tambah data menu -->
                         <?php
-                        echo anchor('admin/add_role', '<button class="btn btn-success btn-flat mb-1 mr-1">Tambah Data</button>');
+                        echo anchor('role/add_role', '<button class="btn btn-success btn-flat mb-1 mr-1">Tambah Data</button>');
+                        
 
                         ?>
 
@@ -32,14 +33,14 @@
                                         <td class="text-center text-xs">
                                             <?php
                                             // button edit
-                                            echo anchor('admin/edit_role/' . $data->id_level_user, '<button class="btn btn-info btn-xs"><i class="fas fa-edit"></i></button>');
+                                            echo anchor('role/edit_role/' . $data->id_level_user, '<button class="btn btn-info btn-xs"><i class="fas fa-edit"></i></button>');
 
                                             // button change access
-                                            echo anchor('admin/access_role/' . $data->id_level_user, '<button class="btn btn-warning btn-xs mx-1"><i class="fas fa-check"></i>Access</button>');
+                                            echo anchor('role/access_role/' . $data->id_level_user, '<button class="btn btn-warning btn-xs mx-1"><i class="fas fa-check"></i>Access</button>');
 
                                             ?>
                                             <!-- button delete -->
-                                            <a href="<?= base_url('admin/delete_role/') . $data->id_level_user; ?>" class="btn btn-danger btn-xs alert_hapus"><i class="fas fa-trash"></i></a>
+                                            <a href="<?= base_url('role/delete_role/') . $data->id_level_user; ?>" class="btn btn-danger btn-xs alert_hapus"><i class="fas fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

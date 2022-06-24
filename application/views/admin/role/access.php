@@ -21,7 +21,7 @@
                     <!-- /.card-body -->
                     <div class="card-footer">
                         <?php
-                        echo anchor('admin/role', '<button class="btn btn-danger float-lg-right">Kembali</button>');
+                        echo anchor('role', '<button class="btn btn-danger float-lg-right">Kembali</button>');
                         ?>
                     </div>
                 </div>

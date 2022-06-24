@@ -9,7 +9,7 @@
                     <!-- /.card-header -->
                     <!-- form start -->
                     <?php
-                    echo form_open('admin/edit_role/' . $role['id_level_user'], 'role="form" class="form-horizontal"');
+                    echo form_open('role/edit_role/' . $role['id_level_user'], 'role="form" class="form-horizontal"');
                     echo form_hidden('id', $role['id_level_user']);
                     ?>
                     <div class="card-body col-sm-10 text-right">
@@ -24,7 +24,7 @@
 
                             <button type="submit" class="btn btn-info mx-1 alert_ubah" name="submit">Update</button>
                             <?php
-                            echo anchor('admin/role', 'Kembali', array('class' => 'btn btn-danger'));
+                            echo anchor('role', 'Kembali', array('class' => 'btn btn-danger'));
                             ?>
 
                         </div>

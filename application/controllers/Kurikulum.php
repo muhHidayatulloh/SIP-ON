@@ -7,13 +7,16 @@ class Kurikulum extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        is_logged_in();
         $this->load->model('Kurikulum_model');
         $this->load->model('Jurusan_model');
+        $this->load->model('user_model');
         $this->load->model('KurikulumDetail_model');
     }
 
     public function index()
     {
+        $data['user'] = $this->user_model->get();
         $data = [
             'kurikulum' => $this->Kurikulum_model->get()
         ];
@@ -23,6 +26,7 @@ class Kurikulum extends CI_Controller
 
     public function add()
     {
+        $data['user'] = $this->user_model->get();
         $data = [
             'kurikulum' => $this->Kurikulum_model->get()
         ];
@@ -72,6 +76,7 @@ class Kurikulum extends CI_Controller
 
     public function edit()
     {
+        $data['user'] = $this->user_model->get();
         if (isset($_POST['submit'])) {
             if ($_POST['is_aktif'] == 'Y') {
                 // jika is_aktif Y maka semua Y pada field is_aktif pada database diganti dengan N
@@ -113,6 +118,7 @@ class Kurikulum extends CI_Controller
 
     public function detail()
     {
+        $data['user'] = $this->user_model->get();
         $data['idKurikulum'] =  $this->uri->segment(3);
         $this->template->load('template', 'kurikulum/detail', $data);
     }
@@ -123,7 +129,7 @@ class Kurikulum extends CI_Controller
         $kur = $this->uri->segment(3);
         $jur = $this->uri->segment(4);
         $ting = $this->uri->segment(5);
-
+        $data['user'] = $this->user_model->get();
         // var_dump($kur . $jur . $ting);
 
         $this->db->select('*');
@@ -148,7 +154,7 @@ class Kurikulum extends CI_Controller
     public function add_detail()
     {
         $id_kurikulum = $this->uri->segment(3);
-
+        $data['user'] = $this->user_model->get();
 
 
         if (isset($_POST['submit'])) {
@@ -163,7 +169,7 @@ class Kurikulum extends CI_Controller
                 redirect('kurikulum/detail/' . $id_kurikulum);
             }
         } else {
-            $this->template->load('template', 'kurikulum/add_detail');
+            $this->template->load('template', 'kurikulum/add_detail', $data);
         }
     }
 
