@@ -15,13 +15,7 @@
 
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <i class="fas fa-graduation-cap"></i><b> Pendidikan</b> <span class="float-right text-muted"><?= $user->pendidikan; ?></span>
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-book"></i><b> Jurusan</b> <span class="float-right text-muted"><?= $user->jurusan; ?></span>
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-calendar"></i><b> Tahun Lulus</b> <span class="float-right text-muted"><?= $user->pendidikan_th; ?></span>
+                                <i class="fas fa-graduation-cap"></i><b> NIK/NUPTK/NIK</b> <span class="float-right text-muted"><?= $user->nip; ?></span>
                             </li>
                         </ul>
 
@@ -50,7 +44,7 @@
                                     </div>
                                 </div>
                                 <!-- The User Profile -->
-                                <div class="row">
+                                <div class="row border">
                                     <div class="col-lg-12">
                                         <div class="card">
                                             <div class="card-body">
@@ -61,10 +55,7 @@
                                                             <label for="nip">Nip</label>
                                                             <input type="text" class="form-control" id="nip" value="<?= $user->nip ?>" readonly>
                                                         </div>
-                                                        <div class="form-group col-md-3">
-                                                            <label for="karpeg">Karpeg</label>
-                                                            <input type="text" class="form-control" id="karpeg" value="<?= $user->karpeg == '0' ? '-' : '' ?>" readonly>
-                                                        </div>
+                                                       
                                                     </div>
 
                                                     <div class="form-row">
@@ -106,72 +97,6 @@
                                                         </div>
                                                     </div>
 
-
-                                                    <div class="form-row">
-                                                        <div class="card">
-                                                            <div class="card-header">
-                                                                <i class="fas fa-file-alt"></i> Detail
-                                                            </div>
-                                                        </div>
-                                                        <table class="table">
-
-                                                            <tr>
-                                                                <td>Pangkat</td>
-                                                                <td><?= $user->pangkat == '0' ? '-' : $user->pangkat; ?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Golongan</td>
-                                                                <td><?= $user->golongan == '0' ? '-' : $user->golongan; ?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Usia</td>
-                                                                <td><?= $user->usia_th == '0' && $user->usia_bl == '0' ? '-' : $user->usia_th . ' Tahun ' . $user->usia_bl . 'Bulan'; ?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Latihan Jabatan</td>
-                                                                <td><?= $user->lat_jab_nama == '0' ? '-' :  $user->lat_jab_nama ?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Waktu Latihan</td>
-                                                                <td><?= $user->lat_jab_th == '0' && $user->lat_jab_bl == '0' ? '-' :   ' Tahun' .  $user->lat_jab_th . ' Bulan ' . $user->lat_jab_bl  ?></td>
-
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Masa Kerja</td>
-                                                                <td><?= $user->mk_th == '0' && $user->mk_bl == '0' ? '-' : $user->mk_th . ' Tahun' . $user->mk_bl . ' Bulan';  ?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Tambahan Masa Kerja</td>
-                                                                <td><?= $user->tambahan_mk_th == '0' && $user->tambahan_mk_bl == '0' ? '-' : $user->tambahan_mk_th . ' Tahun ' . $user->tambahan_mk_bl . ' Bulan' ?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Mutasi Kepegawaian</td>
-                                                                <td><?= $user->mutasi_kepeg == '0' ? '-' : $user->mutasi_kepeg; ?></td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>Pertgl Dso</td>
-                                                                <td><?= $user->pertgl_dso == '0000-00-00' ? '-' : $user->pertgl_dso; ?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>No Tanggal Surat Pengangkatan Pertama</td>
-                                                                <td><?= $user->no_tgl_surat_pengangkatan_pertama == '0' ? '-' :  $user->no_tgl_surat_pengangkatan_pertama; ?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>No Tanggal Surat Pengangkatan Terakhir</td>
-                                                                <td><?= $user->no_tgl_surat_pengangkatan_terakhir == '0' ? '-' :  $user->no_tgl_surat_pengangkatan_terakhir; ?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Pejabat Yang Mengangkat</td>
-                                                                <td><?= $user->pejabat_yang_mengangkat == '0' ? '-' : $user->pejabat_yang_mengangkat; ?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Keterangan </td>
-                                                                <td><?= $user->keterangan == '0' ? '-' : $user->keterangan; ?></td>
-                                                            </tr>
-
-                                                        </table>
-                                                    </div>
                                                 </form>
                                             </div>
 

@@ -11,12 +11,16 @@ class Siswa extends  CI_Controller
         parent::__construct();
         is_logged_in();
         $this->load->model('Siswa_model');
+        $this->load->model('walikelas_model');
         $this->load->model('Kelas_model');
         $this->load->model('OrangTua_model');
         $this->load->library('Pdf');
         $this->load->model('kehadiran_model');
         $this->load->model('user_model');
         $this->load->helper('date');
+        $this->load->model('izin_model');
+        // enkripsi aes
+        $this->load->library('EasyAESCrypt');
     }
 
     // menampilkan tabel data siswa
@@ -32,16 +36,21 @@ class Siswa extends  CI_Controller
 
     public function dashboard()
     {
+        $z = 'abcdefghijuklmno0123456789012345';
+        $encrypt = '';
+        $aes = new EasyAESCrypt($z);
+
         $nis = $this->user_model->get()->nis;
+        $nama_siswa = $this->user_model->get()->nama;
         $tanggal = date('Y-m-d');
         // var_dump($nis);
+        $nis = $aes->encrypt($nis);
 
-
-        $kehadiran = $this->kehadiran_model->get_where_today($nis, $tanggal)->result_array();
+        $kehadiran = $this->kehadiran_model->get_where_today_encrypt($nis, $tanggal)->result_array();
         // var_dump($kehadiran);
 
         $return = '';
-        
+
         $return .= '<table class="table table-bordered text-sm">';
         $return .= '<thead>
             <tr>
@@ -55,21 +64,21 @@ class Siswa extends  CI_Controller
         <tbody>';
         if (!empty($kehadiran)) {
 
-            $return .= '<td>' . $kehadiran[0]['nama'] . '</td>';
+            $return .= '<td>' . $nama_siswa . '</td>';
             $return .= '<td>' . $kehadiran[0]['tanggal'] . '</td>';
             $return .= '<td>' . $kehadiran[0]['jam_masuk'] . '</td>';
-            $return .= '<td>' . $kehadiran[0]['jam_pulang']. '</td>';
+            $return .= '<td>' . $kehadiran[0]['jam_pulang'] . '</td>';
             if ($kehadiran[0]['status'] == 'hadir') {
                 $return .= "<td><span class='badge badge-success'>Hadir</span></td>";
             } else if ($kehadiran[0]['status'] == 'terlambat') {
                 $return .= "<td><span class='badge badge-warning'><span>Terlambat</span></span></td>";
             } else if ($kehadiran[0]['status'] == 'alpa') {
                 $return .= "<td><span class='badge badge-warning'>Alpa</span></td>";
-            } else if ($kehadiran[0]['status'] == 'bolos') {        
+            } else if ($kehadiran[0]['status'] == 'bolos') {
                 $return .= "<td><span class='badge badge-warning'>Bolos</span></span></td>";
-            } else if ($kehadiran[0]['status'] == 'sakit') {            
+            } else if ($kehadiran[0]['status'] == 'sakit') {
                 $return .= "<td><span class='badge badge-primary'>Sakit</span></td>";
-            } else {             
+            } else {
                 $return .= "<td><span class='badge badge-info'>Izin</span></td>";
             }
             $return .= '</tbody></table>';
@@ -77,8 +86,38 @@ class Siswa extends  CI_Controller
             $return = null;
         }
 
-        $data['return'] = $return;
-        $data['user'] = $this->user_model->get();
+        // kehadiran
+        $where_tambahan = "AND `status` != 'alpa' AND `status` != 'izin' AND `status` != 'sakit'";
+        $record_monthly = $this->kehadiran_model->get_record_month_by_nis($nis, $where_tambahan);
+
+        // jumlah sakit masih + hadir
+        $record_monthly_sakit = $this->kehadiran_model->get_record_month_by_nis($nis, "AND `status` != 'alpa' AND `status` != 'izin'");
+
+        // jumlah izin masih + hadir
+        $record_monthly_izin = $this->kehadiran_model->get_record_month_by_nis($nis, "AND `status` != 'alpa' AND `status` != 'sakit'");
+
+        $start_date = date('Y-m-1');
+        $tgl1 = new DateTime();
+        $tgl2 = new DateTime($start_date);
+        $d = $tgl2->diff($tgl1)->days + 1;
+
+        // kehadiran
+        $hadir = $record_monthly->num_rows();
+        $izin = $record_monthly_izin->num_rows() - $hadir;
+        $sakit = $record_monthly_sakit->num_rows() - $hadir;
+        $alpa = $d - $hadir - $izin - $sakit;
+
+        $data = [
+            'nama_siswa' => $nama_siswa,
+            'user'      => $this->user_model->get(),
+            'return'    => $return,
+            'hadir'     => $hadir,
+            'izin'      => $izin,
+            'sakit'     => $sakit,
+            'alpa'      => $alpa,
+            'jumlahHari'  => $d
+
+        ];
 
         $this->template->load('template', 'siswa/dashboard', $data);
     }
@@ -255,15 +294,31 @@ class Siswa extends  CI_Controller
     // untuk tombol kehadiarn yang ada view data siswa
     public function kehadiran($id)
     {
+        $z = 'abcdefghijuklmno0123456789012345';
+        $encrypt = '';
+        $aes = new EasyAESCrypt($z);
 
         $nis = $this->Siswa_model->get('id_siswa', $id)[0]->nis;
         $nama = $this->Siswa_model->get('id_siswa', $id)[0]->nama;
         $datestring = '%m / %Y';
 
+
+        // key yang digunakan
+
+
+        $nis = $aes->encrypt($nis);
+
+        // var_dump($nis);
+
         $start_date = date("1-m-Y");
         $end_date = date('t', strtotime($start_date));
         // $end_date = explode('-', $tgl_terakhir)[2];
-        $kehadiran = $this->kehadiran_model->get_where($nis)->result_array();
+        $kehadiran[] = $this->kehadiran_model->get_encrypt($nis)->result_array();
+
+
+
+        // var_dump($kehadiran);
+
 
 
         $data = [
@@ -287,15 +342,27 @@ class Siswa extends  CI_Controller
 
         // var_dump($id) ;
 
+        // enkripsi aes
+
+        // key yang digunakan
+        $z = 'abcdefghijuklmno0123456789012345';
+        $aes = new EasyAESCrypt($z);
+
+
+
         $nis = $this->Siswa_model->get('id_siswa', $id)[0]->nis;
         $nama = $this->Siswa_model->get('id_siswa', $id)[0]->nama;
+
+        $nis = $aes->encrypt($nis);
+
         $datestring = '%m / %Y';
 
         $start_date = date("1-m-Y");
         $end_date = date('t', strtotime($start_date));
         // $end_date = explode('-', $tgl_terakhir)[2];
-        $kehadiran = $this->kehadiran_model->get_where($nis)->result_array();
+        $kehadiran[] = $this->kehadiran_model->get_encrypt($nis)->result_array();
 
+        // var_dump($kehadiran);
 
         $data = [
             'title'     => 'Kehadiran Siswa',
@@ -304,7 +371,7 @@ class Siswa extends  CI_Controller
             'tanggal'   => mdate($datestring),
             'start_date' => $start_date,
             'end_date'  => $end_date,
-            'user'      => $this->user_model->get()
+            'user'      => $this->user_model->get(),
         ];
 
         $this->template->load('template', 'siswa/absensi/view', $data);
@@ -322,44 +389,48 @@ class Siswa extends  CI_Controller
         $pdf->SetTitle('Data Siswa SMKN 1 Cibatu');
 
         $GetX = $pdf->GetX();
-        $x = $GetX;
+        $x = $GetX + 2;
         $width = $pdf->GetPageWidth();
         $height = $pdf->GetPageHeight();
 
 
 
-        $file = base_url('assets/logo/logo.png');
-        $pdf->Image($file, $GetX, 10, 25, 25);
-        $ml = 22;
+        $file = base_url('assets/logo/jawabarat.png');
+        $smk = base_url('assets/logo/logo.png');
+        $pdf->Image($file, $GetX + 8, 10, 25, 25);
+        $ml = 10;
         $pdf->Cell($ml);
         $pdf->SetFont('Times', "B", 12);
         $pdf->Cell(0, 5, "PEMERINTAH DAERAH PROVINSI JAWA BARAT", 0, 1, 'C');
         $pdf->Cell($ml);
         $pdf->Cell(0, 5, "DINAS PENDIDIKAN", 0, 1, 'C');
         $pdf->Cell($ml);
+        $pdf->Cell(0, 5, "CABANG DINAS PENDIDIKAN WILAYAH IV", 0, 1, 'C');
+        $pdf->Cell($ml);
         $pdf->SetFont('Times', "B", 15);
-        $pdf->Cell(0, 5, "SEKOLAH MENENGAH KEJURUAN NEGERI 1 CIBATU", 0, 1, 'C');
+        $pdf->Cell(0, 6, "SMK NEGERI 1 CIBATU", 0, 1, 'C');
         $pdf->Cell($ml);
         $pdf->SetFont('Times', 'I', 8);
         $pdf->Cell(0, 5, 'Jl. Raya Sadang-Subang Desa Cipinang Kecamatan Cibatu Purwakarta Jawa Barat 41182', 0, 1, 'C');
         $pdf->Cell($ml);
         $pdf->Cell(0, 3, 'Telp (0264) 8396042 Website: smkn1cibatu.sch.id Email: smkn1cibatu@yahoo.co.id', 0, 1, 'C');
-        $pdf->Cell($ml);
-        $pdf->SetFont('Times', 'B', 8);
-        $pdf->Cell(0, 3.1, 'Teknik Permesinan - Teknik Kendaraan Ringan Otomotif - Teknik Komputer dan Jaringan', 0, 1, 'C');
-        $pdf->Cell($ml);
-        $pdf->Cell(0, 3, 'Otomatisasi dan Tata Kelola Perkantoran - Akutansi dan Keuangan Lembaga', 0, 1, 'C');
-        $xline = 43;
+        $pdf->Image($smk, $GetX + 160, 10, 25, 25);
+        // $pdf->Cell($ml);
+        // $pdf->SetFont('Times', 'B', 8);
+        // $pdf->Cell(0, 3.1, 'Teknik Permesinan - Teknik Kendaraan Ringan Otomotif - Teknik Komputer dan Jaringan', 0, 1, 'C');
+        // $pdf->Cell($ml);
+        // $pdf->Cell(0, 3, 'Otomatisasi dan Tata Kelola Perkantoran - Akutansi dan Keuangan Lembaga', 0, 1, 'C');
+        $xline = 46;
         $pdf->SetLineWidth(1);
         $pdf->Line(10, $xline, $width - 10, $xline);
         $pdf->SetLineWidth(0);
         $pdf->Line(10, $xline + 1, $width - 10, $xline + 1);
 
-
-
-        $pdf->SetY(60);
-        $pdf->SetFont('Times', 'B', 15);
+        $pdf->SetY(52);
+        $pdf->SetFont('Times', 'B', 10);
+        $pdf->Cell($ml);
         $pdf->Cell(0, 0, "BIODATA SISWA", 0, 1, 'C');
+        // $pdf->Cell(0, 0, "BIODATA SISWA", 0, 1, 'C');
 
         // Colors, line width and bold font
 
@@ -367,9 +438,9 @@ class Siswa extends  CI_Controller
         $pdf->SetFillColor(219, 219, 219);
         $pdf->SetTextColor(0);
 
-        $pdf->SetFont('Times', 'B', 10);
+        $pdf->SetFont('Times', 'B', 8);
         // Header
-        $pdf->SetY($xline + 30);
+        $pdf->SetY($xline + 15);
         $pdf->SetX($x);
         $w = array(10, 25, 25, 45, 35, 47);
         for ($i = 0; $i < count($header); $i++)
@@ -439,5 +510,65 @@ class Siswa extends  CI_Controller
         header('Cache-Control: max-age=0');
 
         $writer->save('php://output');
+    }
+
+    public function mintaizin()
+    {
+
+        $user = $this->user_model->get();
+        $id_kelas = $user->id_kelas;
+        $id_siswa = $user->id_siswa;
+        $walikelas = $this->walikelas_model->get_where(['id_kelas' => $id_kelas])->row_object();
+        $nama_walikelas = $walikelas->nama;
+
+        $to_date = date('Y-m-d');
+        if (isset($_POST['filter'])) {
+            $to_date = $this->input->post('to_date', TRUE);
+        }
+
+        // var_dump($nama_walikelas);die;
+
+        if (isset($_POST['kirim'])) {
+
+
+            $uploadBukti = $_FILES['bukti']['name'];
+            //             var_dump($id_siswa);
+            //             var_dump($_POST);
+
+            // var_dump($uploadBukti);die;
+            if ($uploadBukti) {
+                $config['allowed_types'] = 'jpeg|jpg|png|docx|doc|pdf';
+                $config['max_size'] = '5048';
+                $config['upload_path'] = './assets/bukti/';
+
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('bukti')) {
+                    $file = $this->upload->data('file_name');
+                    $insert = [
+                        'id_siswa'  => $id_siswa,
+                        'to_date'   => $this->input->post('to_date', TRUE),
+                        'subject'   => $this->input->post('subject', TRUE),
+                        'catatan'   => $this->input->post('catatan', TRUE),
+                        'bukti'     => $file
+                    ];
+
+                    $this->izin_model->save($insert);
+                    $this->session->set_flashdata('pesan', msgSuccess('Berhasil Kirim Surat'));
+                    redirect('siswa/mintaizin');
+                } else {
+                    $error =  $this->upload->display_errors();
+                    $this->session->set_flashdata('pesan', msgError($error));
+                    redirect('siswa/mintaizin');
+                }
+            }
+        } else {
+            $data = [
+                'user' => $user,
+                'nama_walikelas' => $nama_walikelas,
+                'to_date' => $to_date
+            ];
+            $this->template->load('template', 'siswa/minta_izin', $data);
+        }
     }
 }

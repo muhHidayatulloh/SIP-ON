@@ -168,14 +168,7 @@
             console.log(file);
             if (file) {
                 priview.src = URL.createObjectURL(file);
-                // let reader = new FileReader();
-                // reader.onload = function(event) {
-                //     console.log(event.target.result);
-                //     $('#preview').removeAttr('src');
-                //     $('#preview').attr('src', event.target.result);
-                // }
-                // reader.readAsDataURL(file);
-
+            
                 $('.custom-file-label').html(file['name']);
             }
         });

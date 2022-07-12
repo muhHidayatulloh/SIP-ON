@@ -12,13 +12,13 @@ function is_logged_in()
 		$link = $ci->uri->segment(1);
 		$uri2 = $ci->uri->segment(2);
 		$queryMenu = $ci->db->get_where('tabel_menu', ['link' => $link])->row_array();
-		
+
 		if (!is_null($uri2)) {
-			$link = $link.'/'.$uri2;
+			$link = $link . '/' . $uri2;
 			$queryMenu = $ci->db->get_where('tabel_menu', ['link' => $link])->row_array();
 			// var_dump($queryMenu); die;
-			
-			if($queryMenu == null) {
+
+			if ($queryMenu == null) {
 				$link = $ci->uri->segment(1);
 				$queryMenu = $ci->db->get_where('tabel_menu', ['link' => $link])->row_array();
 			}
@@ -169,6 +169,22 @@ function check_access($id_role, $id_menu)
 	}
 }
 
+
+function approved($id_izin)
+{
+	$ci = get_instance();
+
+	$result = $ci->db->get_where('tbl_izin', ['id_izin' => $id_izin, 'is_approve' => 1]);
+
+	if ($result->num_rows() > 0) {
+		$check = 'class="text-success fas fa-check"';
+	} else {
+		$check = 'class="text-danger fas fa-times"';
+	}
+
+	return $check;
+}
+
 function msgSuccess($pesan = '')
 {
 	$msgSuccess =  "
@@ -234,5 +250,40 @@ function toastSuccess($pesan = '')
 	 </script> 
 	  ";
 
-	  return $toastSuccess;
+	return $toastSuccess;
+}
+
+if (!function_exists('bulan_format_indo')) {
+	function bulan_format_indo($date)
+	{
+		date_default_timezone_set('Asia/Jakarta');
+		// array hari dan bulan
+
+		$Bulan = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+
+
+
+		$result = $Bulan[(int)$date - 1];
+
+		return $result;
+	}
+}
+
+if (!function_exists('aes')) {
+	function aes($data)
+	{
+		$result = '';
+
+		return $result;
+	}
+}
+
+function base64media($path)
+{
+    $type = pathinfo($path, PATHINFO_EXTENSION);
+    $body = file_get_contents($path);
+
+    $base64 = 'data:image/' . $type . ';base64,';
+    $base64 .= base64_encode($body);
+    return $base64;
 }

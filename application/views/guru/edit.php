@@ -21,28 +21,28 @@
                         <div class="info-box-content">
                             <div class="form-group">
                                 <label for="nip">Nip / NUPTK / NIK<i class="fas" style="color:red;">*</i></label>
-                                <input type="text" class="form-control form-control-border <?= strlen(form_error('nip')) != 0 ? 'is-invalid' : ''; ?>" id="nip" placeholder="Nip" name="nip" value="<?= set_value('nip'); ?><?= $guru->nip; ?>">
+                                <input type="text" class="form-control form-control-border <?= strlen(form_error('nip')) != 0 ? 'is-invalid' : ''; ?>" id="nip" placeholder="Nip" name="nip" value="<?= $guru->nip; ?>">
                                 <div class="invalid-feedback">
                                     <?= form_error('nip') ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="nama">Nama<i class="fas" style="color:red;">*</i></label>
-                                <input type="text" class="form-control form-control-border <?= strlen(form_error('nama')) ? 'is-invalid' : ''; ?>" id="nama" placeholder="Nama" name="nama" value="<?= set_value('nama'); ?><?= $guru->nama; ?>">
+                                <input type="text" class="form-control form-control-border <?= strlen(form_error('nama')) ? 'is-invalid' : ''; ?>" id="nama" placeholder="Nama" name="nama" value="<?= $guru->nama; ?>">
                                 <div class="invalid-feedback">
                                     <?= form_error('nama'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="tempat_lahir">Tempat Lahir<span style="color: red;">*</span></label>
-                                <input type="text" class="form-control <?= (validation_errors('tempat_lahir')) ? 'is-invalid' : ''; ?>" id="tempat_lahir" name="tempat_lahir" placeholder="Tempat Lahir" value="<?= set_value('tempat_lahir'); ?><?= $guru->tempat_lahir; ?>">
+                                <input type="text" class="form-control <?= (validation_errors('tempat_lahir')) ? 'is-invalid' : ''; ?>" id="tempat_lahir" name="tempat_lahir" placeholder="Tempat Lahir" value="<?= $guru->tempat_lahir; ?>">
                                 <div class="invalid-feedback">
                                     <?= form_error('tempat_lahir'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="tanggal_lahir">Tanggal Lahir <i class="fas" style="color:red;">*</i></label>
-                                <input type="date" class="form-control col-5 <?= (validation_errors('tanggal_lahir')) ? 'is-invalid' : ''; ?>" id="tanggal_lahir" name="tanggal_lahir" value="<?= $guru->tgl_lahir; ?><?= set_value('tanggal_lahir'); ?>">
+                                <input type="date" class="form-control col-5 <?= (validation_errors('tanggal_lahir')) ? 'is-invalid' : ''; ?>" id="tanggal_lahir" name="tanggal_lahir" value="<?= $guru->tgl_lahir; ?>">
                                 <div class="invalid-feedback">
                                     <?= form_error('tanggal_lahir'); ?>
                                 </div>
@@ -69,11 +69,11 @@
                             <div class="form-group">
                                 <label>Gender <span class="fas" style="color: red;">*</span></label>
                                 <div class="custom-control custom-radio">
-                                    <input class="custom-control-input <?= strlen(form_error('ket')) != 0 ? 'is-invalid' : ''; ?>" <?= $guru->gender == 1 ? 'checked' : ''; ?> type="radio" id="customRadio1" name="gender" value="1" <?= set_radio('gender', '1') ?>>
+                                    <input class="custom-control-input <?= strlen(form_error('ket')) != 0 ? 'is-invalid' : ''; ?>" <?= $guru->gender == 'L' ? 'checked' : ''; ?> type="radio" id="customRadio1" name="gender" value="1">
                                     <label for="customRadio1" class="custom-control-label">Laki-laki</label>
                                 </div>
                                 <div class="custom-control custom-radio">
-                                    <input class="custom-control-input <?= strlen(form_error('ket')) != 0 ? 'is-invalid' : ''; ?>" <?= $guru->gender == 2 ? 'checked' : ''; ?> type="radio" id="customRadio2" name="gender" value="2" <?= set_radio('gender', '2'); ?>>
+                                    <input class="custom-control-input <?= strlen(form_error('ket')) != 0 ? 'is-invalid' : ''; ?>" <?= $guru->gender == 'P' ? 'checked' : ''; ?> type="radio" id="customRadio2" name="gender" value="2">
                                     <label for="customRadio2" class="custom-control-label">Perempuan</label>
                                 </div>
 
@@ -94,7 +94,7 @@
                         <div class="info-box-content">
                          
                             <div class="d-flex justify-content-start">
-                                <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+                                <button type="submit" class="btn btn-primary" name="submit">Update Data</button>
                             </div>
                         </div>
                         <!-- ./info-box-content -->

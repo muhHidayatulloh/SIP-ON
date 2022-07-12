@@ -104,7 +104,7 @@ class Guru extends  CI_Controller
                 'alpha_spaces' => "{field} Tidak boleh berisi angka dan karakter lain !!!",
                 'is_unique' => "Sudah ada data dengan {field} / NIK yang sama"
             );
-            $this->form_validation->set_rules('nip', 'NIP', 'required|trim|numeric|is_unique[tbl_guru.nip]', $errorMessage);
+            $this->form_validation->set_rules('nip', 'NIP', 'required|trim|numeric', $errorMessage);
             $this->form_validation->set_rules('nama', 'Nama', 'required', $errorMessage);
             $this->form_validation->set_rules('tempat_lahir', 'Tempat Lahir', 'required|alpha_spaces', $errorMessage);
             $this->form_validation->set_rules('tanggal_lahir', 'Tanggal Lahir', 'required', $errorMessage);

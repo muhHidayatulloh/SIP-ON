@@ -9,12 +9,12 @@
 
                         <span class="float-right">
                             <label class="badge badge-primary">N</label><span> : Netral</span>
-                            <label class="badge badge-success"><i class="fas fa-check-circle"></i></label><span> : Hadir</span>
+                            <label class="badge text-success"><i class="fas fa-check"></i></label><span> : Hadir</span>
                             <label class="badge badge-info ml-2">I</label><span> : Izin </span>
                             <label class="badge badge-secondary ml-2">S</label><span> : Sakit </span>
                             <label class="badge badge-warning ml-2">A</label><span> : Tidak Hadir</span>
-                            <label class="badge badge-warning ml-2">T</label><span> : Terlambat </span>
-                            <label class="badge badge-warning ml-2">B</label><span> : Bolos</span>
+                            <label class="badge bg-teal ml-2">T</label><span> : Terlambat </span>
+                            <label class="badge bg-fuchsia ml-2">B</label><span> : Bolos</span>
                             <label class="badge badge-danger ml-2">L</label><span> : Libur</span>
                         </span>
                     </div>
@@ -42,14 +42,16 @@
                                         $weekday = date('l', $datetime);
 
                                         if ($weekday == 'Sunday') {
-                                            $weekday = 'Minggu';
+                                            $weekday = 'M';
+                                        } else if ($weekday == 'Saturday') {
+                                            $weekday = 'S';
                                         }
 
 
-                                        if (($weekday != "Minggu")) {
+                                        if (($weekday != "M" && $weekday != "S")) {
                                             echo "<th>" . $k . "</th>";
                                         } else {
-                                            echo "<th>" . $weekday . "</th>";
+                                            echo "<th class='bg-danger'>" . $weekday . "</th>";
                                         }
                                     }
 
@@ -60,7 +62,7 @@
                                     <tr>
                                         <?php
                                         if (!empty($kehadiran)) {
-                                            for ($i = 1; $i < count($kehadiran); $i++) {
+                                            for ($i = 0; $i < count($kehadiran); $i++) {
                                                 // var_dump($kehadiran);
                                                 $hadir = 0;
                                                 $alpa = 0;
@@ -69,8 +71,9 @@
                                                 $sakit = 0;
                                                 $bolos = 0;
 
-                                                echo "<td><h6>" . $kehadiran[$i]['nama'] . "</h6></td>";
-                                                $nis = $kehadiran[$i]['nis'];
+                                                echo "<td><h6>" . $nama . "</h6></td>";
+                                                $nis = $kehadiran[0][$i]['nis'];
+
                                                 for ($j = 1; $j <= $end_date; $j++) {
                                                     $thisDate = date('Y-m-');
                                                     $thisDate .= $j;
@@ -79,10 +82,12 @@
                                                     $weekday = date('l', $datetime);
 
                                                     if ($weekday == 'Sunday') {
-                                                        $weekday = 'Minggu';
+                                                        $weekday = 'M';
+                                                    } else if ($weekday == 'Saturday') {
+                                                        $weekday = 'S';
                                                     }
 
-                                                    if (($weekday != "Minggu")) {
+                                                    if (($weekday != "M" && $weekday != "S")) {
                                                         $sql = "SELECT status FROM record_kehadiran WHERE nis='$nis' AND tanggal='$thisDate'";
                                                         $result = $this->db->query($sql)->result_array();
                                                         // var_dump($sql);
@@ -92,25 +97,45 @@
 
                                                             if ($result[0]['status'] == 'hadir') {
                                                                 $hadir++;
-                                                                echo "<td><span class='badge badge-success'><i class='fas fa-check-circle'></i></span></td>";
+                                                                echo "<td><span class='badge text-success'><i class='fas fa-check'></i></span></td>";
                                                             } else if ($result[0]['status'] == 'terlambat') {
                                                                 $terlambat++;
-                                                                echo "<td><span class='badge badge-warning'>T</span></td>";
+                                                                echo "<td><span class='badge bg-teal'>T</span></td>";
                                                             } else if ($result[0]['status'] == 'alpa') {
                                                                 $alpa++;
                                                                 echo "<td><span class='badge badge-warning'>A</span></td>";
                                                             } else if ($result[0]['status'] == 'bolos') {
                                                                 $bolos++;
-                                                                echo "<td><span class='badge badge-warning'>B</span></td>";
+                                                                echo "<td><span class='badge bg-fuchsia'>B</span></td>";
                                                             } else if ($result[0]['status'] == 'sakit') {
                                                                 $sakit++;
-                                                                echo "<td><span class='badge badge-primary'>S</span></td>";
+                                                                echo "<td><span class='badge badge-secondary'>S</span></td>";
                                                             } else {
                                                                 $izin++;
                                                                 echo "<td><span class='badge badge-info'>I</span></td>";
                                                             }
                                                         } else {
-                                                            echo "<td><span class='badge badge-primary'>N</span></td>";
+                                                            $today = date('d');
+                                                            $thisMonth = date('m');
+                                                            $thisYear = date('Y');
+                                                            $bulan = date('m');
+                                                            $tahun = date('Y');
+
+                                                            // cek filter ada dibulan sekarang atau kurang dari bulan sekarang
+                                                            if ($bulan . $tahun < $thisMonth . $thisYear) {
+
+                                                                echo "<td><span class='badge badge-warning'>A</span></td>";
+                                                            } else if ($bulan . $tahun > $thisMonth . $thisYear) {
+                                                                // jika lebih dari bulan sekarang
+                                                                echo "<td><span class='badge badge-primary'>N</span></td>";
+                                                            } else {
+                                                                // jika bulan sesuai dengan bulan sekarang
+                                                                if ($j < $today) {
+                                                                    echo "<td><span class='badge badge-warning'>A</span></td>";
+                                                                } else {
+                                                                    echo "<td><span class='badge badge-primary'>N</span></td>";
+                                                                }
+                                                            }
                                                         }
                                                     } else {
                                                         echo "<td><span class='badge badge-danger'>L</span></td>";

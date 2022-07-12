@@ -16,5 +16,6 @@
 </section>
 
 <script src="<?= base_url('assets/plugins/jquery/jquery.min.js'); ?>"></script>
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<!-- <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script> -->
+<script src="<?= base_url('assets/custom/js/html5qr.js') ?>" type="text/javascript"></script>
 <script src="<?= base_url('assets/custom/js/scan.js') ?>" type="text/javascript"></script>

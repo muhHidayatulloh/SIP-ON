@@ -5,7 +5,8 @@ class Siswa_model extends CI_Model
     public $tabel = "tbl_siswa", $id = "id_siswa";
 
 
-    function get_siswa_select_where($select = '*', $where = []) {
+    function get_siswa_select_where($select = '*', $where = [])
+    {
         $this->db->select($select);
         $this->db->join('tbl_kelas', $this->tabel . '.id_kelas = tbl_kelas.id');
         $this->db->join('tbl_orang_tua', $this->tabel . '.id_orang_tua = tbl_orang_tua.id_orang_tua');
@@ -17,7 +18,7 @@ class Siswa_model extends CI_Model
 
     function get($field = null, $where = null, $sql = null, $querySql = null)
     {
-        $this->db->select('*, tbl_orang_tua.alamat as alamat_ortu, tbl_orang_tua.nama as nama_ayah, tbl_siswa.nama as nama');
+        $this->db->select('tbl_siswa.*, tbl_kelas.nomor_kelas, tbl_jurusan.*, tbl_tingkatan_kelas.nama_tingkatan, tbl_orang_tua.alamat as alamat_ortu, tbl_orang_tua.nama as nama_ayah, tbl_siswa.nama as nama, tbl_orang_tua.username as username_ortu');
 
         $this->db->join('tbl_kelas', $this->tabel . '.id_kelas = tbl_kelas.id');
         $this->db->join('tbl_orang_tua', $this->tabel . '.id_orang_tua = tbl_orang_tua.id_orang_tua');

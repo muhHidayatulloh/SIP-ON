@@ -18,25 +18,37 @@ class Admin extends CI_Controller
 		$this->load->model('Siswa_model');
 		$this->load->helper('mylib_helper');
 		$this->load->model('user_model');
+		$this->load->model('kehadiran_model');
 	}
 
 	public function index()
 	{
 
-		$prefs = array(
-			'start_day'    => 'monday',
-			'month_type'   => 'short',
-			'day_type'     => 'long'
-		);
-		$this->load->library('calendar', $prefs);
-		$year = date('Y');
-		$month = date('m');
+		
+		$m = date('m');
+
+		for($i = 1; $i < $m; $i++) {
+			
+			$bulan[] = bulan_format_indo($i);
+			if($i < 10) {
+				$count[] = $this->kehadiran_model->get_month($i)->num_rows();
+			} else {
+				$count[] = $this->kehadiran_model->get_month($i)->num_rows();
+			}
+		}
+
+// var_dump(bulan_format_indo(2));
+
 		$data = [
 			'title' => 'Dashboard',
 			'siswa' => $this->Siswa_model->count(),
-			'calendar' => $this->calendar->generate(),
-			'user' => $this->user_model->get()
+			'countkehadiran' => $this->kehadiran_model->count_today(),
+			'user' => $this->user_model->get(),
+			'bulan' => $bulan,
+			'countMonthly' => $count
 		];
+		
+		// var_dump($data['countMonthly']);
 
 		$this->template->load('template', 'admin/view', $data);
 	}

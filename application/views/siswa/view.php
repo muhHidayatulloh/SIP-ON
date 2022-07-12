@@ -34,9 +34,11 @@
                                     <th width="12px">No</th>
                                     <th>Nis</th>
                                     <th>Nisn</th>
+                                    <th>Username_me</th>
                                     <th>Nama Siswa</th>
                                     <th>Foto</th>
                                     <th>Kelas</th>
+                                    <th>Username Ortu</th>
                                     <th>Aksi</th>
 
                                 </tr>
@@ -48,10 +50,12 @@
                                         <td><?= $i++; ?></td>
                                         <td><?= $data->nis; ?></td>
                                         <td><?= $data->nisn; ?></td>
+                                        <td><?= $data->username; ?></td>
                                         <td><?= $data->nama; ?></td>
                                         <td class="justify-content-center d-flex"><img src="<?= base_url('assets/dist/img/profile/' . $data->pas_foto); ?>" alt="Profile Image" class="rounded img-thumbnail img-md" id="profile"></td>
                                         <td><?= $data->nama_tingkatan . " " . $data->nama_jurusan . " " . $data->nomor_kelas; ?></td>
-
+                                        <td><?= $data->username_ortu; ?></td>
+                                        
 
                                         <td class="text-center">
 

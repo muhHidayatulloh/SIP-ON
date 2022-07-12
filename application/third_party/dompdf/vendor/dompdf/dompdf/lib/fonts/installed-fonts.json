@@ -1,0 +1,18 @@
+{
+    "glyphicons halflings": {
+        "normal": "glyphicons_halflings_normal_448cf7c5a9f8cf5b480d96c9606cc001"
+    },
+    "source sans pro": {
+        "italic": "C:\\xampp\\htdocs\\presensi\\application\\third_party\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/source_sans_pro_italic_27672a92dcedb2218abd2dadee4fe950",
+        "300": "C:\\xampp\\htdocs\\presensi\\application\\third_party\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/source_sans_pro_300_dbbdd64c03e29f61c9033b77e28cbe3e",
+        "normal": "C:\\xampp\\htdocs\\presensi\\application\\third_party\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/source_sans_pro_normal_a457a0c6f86469b4a65db96256674d7c",
+        "bold": "source_sans_pro_bold_cc1ea6f6b63a94074b2e903a95fedc64"
+    },
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_ca801db5458f42551553dc5da4d54c60"
+    },
+    "font awesome 5 free": {
+        "normal": "C:\\xampp\\htdocs\\presensi\\application\\third_party\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/font_awesome_5_free_normal_de7b097b3a4b7d2ff3a4efe819c1e597",
+        "900": "font_awesome_5_free_900_5ba4699d00fdd71282044e760499f78b"
+    }
+}

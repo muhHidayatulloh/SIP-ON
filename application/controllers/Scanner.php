@@ -20,6 +20,12 @@ class Scanner extends  CI_Controller
 
     public function validation_qr()
     {
+        $this->load->library('EasyAESCrypt');
+
+        $z = 'abcdefghijuklmno0123456789012345';
+        $encrypt = '';
+        $aes = new EasyAESCrypt($z);
+
         $token = $this->input->post('token', TRUE);
 
         $this->db->where('token', $token);
@@ -30,18 +36,21 @@ class Scanner extends  CI_Controller
             // jika hasil scan valid
             $result = $this->user_model->get();
             $nis = $result->nis;
+            $nis = $aes->encrypt($nis);
+            // $nisEncrypt = $aes->encrypt($nis);
             $record_today = $this->kehadiran_model->get_today($nis);
-            $jadwal_masuk = '01:00:00';
-            $jadwal_pulang = '02:00:00';
+            $jadwal_masuk = '07:00:00';
+            $jadwal_pulang = '12:00:00';
             $jam_record = date('H:i:s');
             $tanggal = date('Y-m-d');
             $hasil = ['pesan' => 'Default'];
             $record_pulang = $this->kehadiran_model->get_pulang($nis)->num_rows();
             $record_masuk = $this->kehadiran_model->get_masuk($nis)->num_rows();
-            $chatID = '948313695';
-            $token2 = "1631320877:AAEWzHc9iVhGj74OLHEwCAU6F725Bm3B3oU"; // token bot
+            $chatID = '948313695'; //chat id muhamad hidayatulloh
+            // $chatID = '1910851864';
+            $token2 = "5525121168:AAG5bL1PyyxUSuCL-grYd0T62S2xy73RyC8"; // token bot
 
-       
+
             // cek sudah rekam kehadiran tanggal sekarang
             if ($record_today->num_rows() > 0) {
                 // jika sudah ada rekaman data hari ini
@@ -54,6 +63,7 @@ class Scanner extends  CI_Controller
 
                     $result = $this->user_model->get();
                     $nis = $result->nis;
+                    $nis = $aes->encrypt($nis);
                     // cek dulu user sudah melakukan absensi pulang pada hari ini atau belum
 
                     if ($record_pulang > 0) {
@@ -80,6 +90,7 @@ class Scanner extends  CI_Controller
                             'jam_pulang' => $jam_record,
                             'status' => $status
                         ];
+
                         $this->db->where(['nis' => $nis, 'tanggal' => $tanggal]);
                         $this->db->update('record_kehadiran', $data);
 
@@ -88,10 +99,10 @@ class Scanner extends  CI_Controller
                             'text' => 'Nama : ' . $result->nama . '.  Tanggal Kehadiran : ' . $tanggal . '.  Jam_melakukan Kehadrian : ' . $jam_record . '.   Keterangan : ' . $ket,
                             'chat_id' => $chatID
                         ];
-                        file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
 
                         // memberikan data untuk pesan alert
                         $hasil = ['warning' => 'Nama : <b>' . $result->nama . '</b><br> Tanggal Melakukan Kehadiran : <b>' . $tanggal . '</b><br> Jam Melakukan Kehadiran : <b>' . $jam_record . '</b><br><i class="fas text-danger">*</i>Keterangan : ' . $ket, 'icon' => 'success'];
+                        file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
                     }
                 } else {
                     // user mencoba melakukan absensi masuk
@@ -133,7 +144,6 @@ class Scanner extends  CI_Controller
                             'text' => 'Nama : ' . $result->nama . '.  Tanggal Kehadiran : ' . $tanggal . '.  Jam_melakukan Kehadrian : ' . $jam_record . '.   Keterangan : ' . $ket,
                             'chat_id' => $chatID
                         ];
-                        file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
 
                         // kirim data untuk ditampilkan pada pesan alert
                         $hasil = [
@@ -143,6 +153,7 @@ class Scanner extends  CI_Controller
                             'jam'       => date('H:i:s'),
                             'status'    => $ket
                         ];
+                        file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
                     }
                 }
             } else {
@@ -152,6 +163,7 @@ class Scanner extends  CI_Controller
                 $result = $this->user_model->get();
                 $nis = $result->nis;
 
+                $nis = $aes->encrypt($nis);
 
 
 
@@ -168,9 +180,9 @@ class Scanner extends  CI_Controller
 
                     $this->db->insert('record_kehadiran', $data);
 
-                    
+
                     $hasil = ['warning' => 'Nama : <b>' . $result->nama . '</b><br> Tanggal Melakukan Kehadiran : <b>' . $tanggal . '</b><br> Jam Melakukan Kehadiran : <b>' . $jam_record . '</b><br> <u><i class="fas fa-quote-left"></i>Keterangan<u> : Anda Tidak Melakukan <b class="text-danger">ABSENSI MASUK</b>, Jadi status kehadiran anda <span class="text-warning"><b>Terlambat</b></span>', 'icon' => 'warning'];
-                    
+
                     // kirim noifikasi ke orang tua
                     $object = [
                         'text' => 'Nama : ' . $result->nama . '.  Tanggal Kehadiran : ' . $tanggal . '.  Jam_melakukan Kehadrian : ' . $jam_record . '.   Keterangan : Terlambat',
@@ -178,7 +190,6 @@ class Scanner extends  CI_Controller
                     ];
 
                     file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
-
                 } else {
 
                     if ($jam_record > $jadwal_masuk) {
@@ -213,7 +224,6 @@ class Scanner extends  CI_Controller
                     ];
 
                     file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
-
                 }
             }
         } else {

@@ -20,3 +20,20 @@ if (!function_exists('format_indo')) {
         return $result;
     }
 }
+
+if (!function_exists('hari_format_indo')) {
+    function hari_format_indo($date)
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        // array hari dan bulan
+        $Hari = array("Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu");
+        $Bulan = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+
+        // pemisahan tahun, bulan, hari, dan waktu
+       
+        $hari = date("w", strtotime($date));
+        $result = $Hari[$hari];
+
+        return $result;
+    }
+}

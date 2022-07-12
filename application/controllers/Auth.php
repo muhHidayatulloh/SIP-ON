@@ -116,7 +116,9 @@ class Auth extends CI_Controller
 
 	public function blocked()
 	{
+		$this->load->model('user_model');
 		$data['title'] = 'blocked';
+		$data['user'] = $this->user_model->get();
 		$this->template->load('template', 'auth/blocked', $data);
 	}
 }

@@ -10,23 +10,38 @@ class OrangTua extends CI_Controller
         $this->load->model('orangTua_model');
         $this->load->model('user_model');
         $this->load->model('kehadiran_model');
+        $this->load->library('EasyAESCrypt');
     }
 
     public function index()
     {
+        // mengambil semua data user
         $user =  $this->user_model->get();
+        // mengambil data id_orangtua dari hasil query user_model
         $id_orang_tua = $user->id_orang_tua;
 
+        // quwry join dengan tabel siswa
         $orangTua = $this->orangTua_model->get_where(['a.id_orang_tua' => $id_orang_tua])->row_object();
 
         // var_dump($orangTua);
+
+        // mengambil nis dan nama yang sesuai dengan data orang tua
         $nis = $orangTua->nis;
+        $nama_siswa = $orangTua->nama_siswa;
+
+
+        // key yang digunakan
+        $z = 'abcdefghijuklmno0123456789012345';
+        $aes = new EasyAESCrypt($z);
+
+        // enkripsi data nis
+        $nis = $aes->encrypt($nis);
 
         $tanggal = date('Y-m-d');
         // var_dump($nis);
 
 
-        $kehadiran = $this->kehadiran_model->get_where_today($nis, $tanggal)->result_array();
+        $kehadiran = $this->kehadiran_model->get_where_today_encrypt($nis, $tanggal)->result_array();
         // var_dump($kehadiran);
 
         $return = '';
@@ -44,7 +59,7 @@ class OrangTua extends CI_Controller
         <tbody>';
         if (!empty($kehadiran)) {
 
-            $return .= '<td>' . $kehadiran[0]['nama'] . '</td>';
+            $return .= '<td>' . $nama_siswa . '</td>';
             $return .= '<td>' . $kehadiran[0]['tanggal'] . '</td>';
             $return .= '<td>' . $kehadiran[0]['jam_masuk'] . '</td>';
             $return .= '<td>' . $kehadiran[0]['jam_pulang'] . '</td>';
@@ -66,8 +81,44 @@ class OrangTua extends CI_Controller
             $return = null;
         }
 
-        $data['return'] = $return;
-        $data['user'] = $user;
+        // $data['return'] = $return;
+
+        // mengambil data kehadiran 1 bulan ini berdasarkan nis termasuk status alpa
+        // $record = $this->kehadiran_model->get_record_month_by_nis($nis);
+        // var_dump($record->result());
+
+        // kehadiran
+        $where_tambahan = "AND `status` != 'alpa' AND `status` != 'izin' AND `status` != 'sakit'";
+        $record_monthly = $this->kehadiran_model->get_record_month_by_nis($nis, $where_tambahan);
+
+        // jumlah sakit masih + hadir
+        $record_monthly_sakit = $this->kehadiran_model->get_record_month_by_nis($nis, "AND `status` != 'alpa' AND `status` != 'izin'");
+
+        // jumlah izin masih + hadir
+        $record_monthly_izin = $this->kehadiran_model->get_record_month_by_nis($nis, "AND `status` != 'alpa' AND `status` != 'sakit'");
+
+        $start_date = date('Y-m-1');
+        $tgl1 = new DateTime();
+        $tgl2 = new DateTime($start_date);
+        $d = $tgl2->diff($tgl1)->days + 1;
+
+        // kehadiran
+        $hadir = $record_monthly->num_rows();
+        $izin = $record_monthly_izin->num_rows() - $hadir;
+        $sakit = $record_monthly_sakit->num_rows() - $hadir;
+        $alpa = $d - $hadir - $izin - $sakit;
+
+        $data = [
+            'nama_siswa' => $nama_siswa,
+            'user'      => $user,
+            'return'    => $return,
+            'hadir'     => $hadir,
+            'izin'      => $izin,
+            'sakit'     => $sakit,
+            'alpa'      => $alpa,
+            'jumlahHari'  => $d
+
+        ];
         $this->template->load('template', 'orang_tua/dashboard', $data);
     }
 
@@ -122,20 +173,36 @@ class OrangTua extends CI_Controller
         $orangTua = $this->orangTua_model->get_where(['a.id_orang_tua' => $id_orang_tua])->row_object();
 
         $nis = $orangTua->nis;
+        $nama_siswa = $orangTua->nama_siswa;
+
+        // enkripsi aes
+        // key yang digunakan
+        $z = 'abcdefghijuklmno0123456789012345';
+        $aes = new EasyAESCrypt($z);
+
+        $nis = $aes->encrypt($nis);
 
 
         $start_date = date("1-m-Y");
         $end_date = date('t', strtotime($start_date));
         // $end_date = explode('-', $tgl_terakhir)[2];
-        $kehadiran = $this->kehadiran_model->get_where($nis)->result_array();
+        $kehadiran[] = $this->kehadiran_model->get_encrypt($nis)->result_array();
 
+        // var_dump($kehadiran);
         $data = [
             'user'      => $user,
             'tanggal'   => date('m / Y'),
             'end_date'  => $end_date,
-            'kehadiran' => $kehadiran
+            'kehadiran' => $kehadiran,
+            'nama_siswa' => $nama_siswa
         ];
 
         $this->template->load('template', 'orang_tua/rekap', $data);
+    }
+
+    public function aktivasi_notif_telegram()
+    {
+        $data['user'] = $this->user_model->get();
+        $this->template->load('template', 'orang_tua/aktivasi', $data);
     }
 }

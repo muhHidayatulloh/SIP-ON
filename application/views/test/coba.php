@@ -25,3 +25,8 @@
 </body>
 
 </html>
+
+
+
+
+<!-- <img style="height: 40px" src="<?= base64media('./assets/homepage/images/toor-logo.png') ?>"> -->

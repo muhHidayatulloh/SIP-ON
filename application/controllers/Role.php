@@ -2,6 +2,7 @@
 
 class Role extends CI_Controller {
 
+	public $user;
 
     function __construct()
 	{
@@ -14,6 +15,8 @@ class Role extends CI_Controller {
 		$this->load->model('Siswa_model');
 		$this->load->helper('mylib_helper');
 		$this->load->model('user_model');
+
+		$this->user = $this->user_model->get();
 	}
 
 
@@ -23,14 +26,14 @@ class Role extends CI_Controller {
 		$data = [
 			'title'=> 'manage role',
 			'role' => $this->Role_model->get(),
-			'user' => $this->user_model->get()
+			'user' => $this->user
 		];
 		$this->template->load('template', 'admin/role/view', $data);
 	}
 
 	public function add_role()
 	{
-		$data['user'] = $this->user_model->get();
+		$data['user'] = $this->user;
 		if (isset($_POST['submit'])) {
 			$this->Role_model->save();
 			$this->session->set_flashdata('pesan', msgSuccess('Role berhasil ditambahkan'));
@@ -72,7 +75,8 @@ class Role extends CI_Controller {
 		$data = [
 			'menu'	=> $this->Menu_model->get(),
 			'role'	=> $this->Role_model->get_where($id_role),
-			'title'	=> 'role'
+			'title'	=> 'role',
+			'user'  => $this->user
 		];
 		$this->template->load('template', 'admin/role/access', $data);
 	}

@@ -50,4 +50,57 @@ class Test extends CI_Controller
 
         echo json_encode($data);
     }
+
+    public function aes()
+    {
+
+        $this->load->library('EasyAESCrypt');
+        // $nama = "Muhamad Hidyatulloh";
+        $encrypt = '';
+
+
+
+        $k = 'abcdefghijuklmno0123456789012345'; // ini adalah key yang dipakai
+        $encrypt = '';
+        $aesE = new EasyAESCrypt($k);
+
+        $enkripsi = $aesE->encrypt('22230004');
+        $dekripsi = $aesE->decrypt($enkripsi);
+
+        if (isset($_POST['encrypt'])) {
+            $input = $this->input->post('aes', TRUE);
+            $encrypt = $aesE->encrypt($input);
+
+            $decrypt = $aesE->decrypt($encrypt);
+            $this->session->set_flashdata('message', $encrypt);
+            $this->session->set_flashdata('decrypt', $decrypt);
+
+            redirect('test/aes');
+        }
+
+        $nis = $this->db->get_where('record_kehadiran', ['nis' => $enkripsi])->row_object()->nis;
+
+
+
+
+
+
+        $data = [
+            'enkripsi' => $enkripsi,
+            'dekripsi' => $dekripsi,
+            'return' => $encrypt,
+            'nis' => $nis,
+            'nisDecrypt' => $aesE->decrypt($nis)
+        ];
+
+        $this->load->view('test/aes', $data);
+    }
+
+    public function qr_print()
+    {
+
+        $this->load->library('dompdfimage');
+        $html = $this->load->view('test/qr_print', [], true);
+        $this->dompdf->createPDF($html, 'Cetak Qr', true, 'A4', 'potrait');
+    }
 }

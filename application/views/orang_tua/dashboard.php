@@ -2,15 +2,34 @@
     <div class='container-fluid'>
         <div class="row">
             <div class="col-lg-12">
-                <div class="title h4">Catatan Kehadiran anak bulan Ini :</div>
+               
+                        <blockquote class="quote-info">
+                            <p>Catatan ketidakhadiran anak bulan ini :</p>
+                            <small>Nama : <cite title="Source Title"><?= $nama_siswa; ?></cite></small>
+                        </blockquote>
+                    
             </div>
         </div>
         <div class='row'>
             <div class="col-lg-3 col-6">
                 <!-- small box -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3><?= $hadir; ?>/<?= $jumlahHari; ?></h3>
+
+                        <p>Hadir/Total Record</p>
+                    </div>
+                    <div class="icon">
+                        <i class="far">H</i>
+                    </div>
+                    <!-- <a href="<?= base_url('siswa'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>89</h3>
+                        <h3><?= $alpa; ?></h3>
 
                         <p>Alpa</p>
                     </div>
@@ -22,9 +41,9 @@
             </div>
             <div class="col-lg-3 col-6">
                 <!-- small box -->
-                <div class="small-box bg-warning">
+                <div class="small-box bg-teal">
                     <div class="inner">
-                        <h3>33</h3>
+                        <h3><?= $izin; ?></h3>
 
                         <p>Izin</p>
                     </div>
@@ -36,9 +55,9 @@
             </div>
             <div class="col-lg-3 col-6">
                 <!-- small box -->
-                <div class="small-box bg-warning">
+                <div class="small-box bg-light">
                     <div class="inner">
-                        <h3>89</h3>
+                        <h3><?= $sakit; ?></h3>
 
                         <p>Sakit</p>
                     </div>
@@ -56,7 +75,7 @@
             <div class="col-md-12">
                 <div class="card shadow-lg">
                     <div class="card-header">
-                       <i class="far fa-check-square"></i> Kehadiran Anak Hari Ini
+                        <i class="far fa-check-square"></i> Kehadiran Anak Hari Ini
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
