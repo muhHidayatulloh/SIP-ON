@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-class TahunAkademik extends Ci_Controller
+class Tahunakademik extends Ci_Controller
 {
 
     function __construct()

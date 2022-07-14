@@ -1,6 +1,6 @@
 <?php
 
-class OrangTua extends CI_Controller
+class Orangtua extends CI_Controller
 {
 
     public function __construct()

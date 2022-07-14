@@ -1,5 +1,7 @@
 <?php
 
+use Telegram\Bot\Api;
+
 class Scanner extends  CI_Controller
 {
     public function __construct()
@@ -20,6 +22,7 @@ class Scanner extends  CI_Controller
 
     public function validation_qr()
     {
+        $telegram = new Api('5525121168:AAG5bL1PyyxUSuCL-grYd0T62S2xy73RyC8');
         $this->load->library('EasyAESCrypt');
 
         $z = 'abcdefghijuklmno0123456789012345';
@@ -36,6 +39,10 @@ class Scanner extends  CI_Controller
             // jika hasil scan valid
             $result = $this->user_model->get();
             $nis = $result->nis;
+            $ids = $result->id_siswa;
+
+            $id_orang_tua = $result->id_orang_tua ?? '0';
+
             $nis = $aes->encrypt($nis);
             // $nisEncrypt = $aes->encrypt($nis);
             $record_today = $this->kehadiran_model->get_today($nis);
@@ -46,7 +53,11 @@ class Scanner extends  CI_Controller
             $hasil = ['pesan' => 'Default'];
             $record_pulang = $this->kehadiran_model->get_pulang($nis)->num_rows();
             $record_masuk = $this->kehadiran_model->get_masuk($nis)->num_rows();
-            $chatID = '948313695'; //chat id muhamad hidayatulloh
+            $chatID = $this->db->get_where('tbl_telegram', ['id_user' => $id_orang_tua])->row()->chat_id;
+
+            // $chatID = '948313695'; //chat id muhamad hidayatulloh
+
+            // $chatID = $this->db->get_where('tbl_telegram', ['id_user'=>$id_ortu])->row()->chat_id;
             // $chatID = '1910851864';
             $token2 = "5525121168:AAG5bL1PyyxUSuCL-grYd0T62S2xy73RyC8"; // token bot
 
@@ -102,7 +113,8 @@ class Scanner extends  CI_Controller
 
                         // memberikan data untuk pesan alert
                         $hasil = ['warning' => 'Nama : <b>' . $result->nama . '</b><br> Tanggal Melakukan Kehadiran : <b>' . $tanggal . '</b><br> Jam Melakukan Kehadiran : <b>' . $jam_record . '</b><br><i class="fas text-danger">*</i>Keterangan : ' . $ket, 'icon' => 'success'];
-                        file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
+                        // file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
+                        $telegram->sendMessage($object);
                     }
                 } else {
                     // user mencoba melakukan absensi masuk
@@ -153,7 +165,8 @@ class Scanner extends  CI_Controller
                             'jam'       => date('H:i:s'),
                             'status'    => $ket
                         ];
-                        file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
+                        // file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
+                        $telegram->sendMessage($object);
                     }
                 }
             } else {
@@ -173,6 +186,7 @@ class Scanner extends  CI_Controller
 
                     $data = [
                         'nis' => $nis,
+                        'ids' => $ids,
                         'tanggal' => $tanggal,
                         'jam_pulang' => $jam_record,
                         'status' => 'terlambat'
@@ -189,7 +203,8 @@ class Scanner extends  CI_Controller
                         'chat_id' => $chatID
                     ];
 
-                    file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
+                    // file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
+                    $telegram->sendMessage($object);
                 } else {
 
                     if ($jam_record > $jadwal_masuk) {
@@ -202,6 +217,7 @@ class Scanner extends  CI_Controller
 
                     $data = [
                         'nis' => $nis,
+                        'ids' => $ids,
                         'tanggal' => $tanggal,
                         'jam_masuk' => $jam_record,
                         'status' => $status
@@ -223,11 +239,22 @@ class Scanner extends  CI_Controller
                         'chat_id' => $chatID
                     ];
 
-                    file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
+                    // file_get_contents("https://api.telegram.org/bot$token2/sendMessage?" . http_build_query($object));
+                    $telegram->sendMessage($object);
                 }
             }
         } else {
             // jika hasil scan tidak valid
+            $response = $telegram->sendMessage([
+                
+                'chat_id' => '948313695', 
+              
+                'text' => 'QR Tidak Valid'
+              
+            ]);
+            
+            
+            // $messageId = $response->getMessageId();
             $hasil = ['pesan' => 'QR Tidak valid gagal merekan data absensi'];
         }
 

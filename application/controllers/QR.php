@@ -1,6 +1,6 @@
 <?php
 
-class QR extends CI_Controller
+class Qr extends CI_Controller
 {
     public function __construct()
     {
